@@ -6,6 +6,11 @@ html {
   width: 100vw;
   height: 100vh;
 }
+
+button:hover {
+  cursor: pointer;
+}
+
 nav {
   display: flex;
   justify-content: flex-end;
