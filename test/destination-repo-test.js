@@ -1,6 +1,6 @@
 import chai from 'chai';
 const expect = chai.expect;
-import {destinations} from './test-data.js';
+import { destinations } from './test-data.js';
 import DestinationRepo from '../src/DestinationRepo.js'
 import Destination from '../src/Destination.js'
 
@@ -24,6 +24,6 @@ describe('Destinations', () => {
   });
 
   it("should be able to find a destination using its ID", function () {
-    expect(destinationRepo.findDestination(3)).to.deep.equal(destinations[4]);
+    expect(destinationRepo.findDestination(3)).to.equal(destinations[2]);
   });
 });
