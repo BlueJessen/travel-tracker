@@ -7,6 +7,9 @@ import DestinationRepo from './DestinationRepo.js'
 import Trips from './Trips.js';
 import { getPromise, allData } from './apiCalls';
 
+//Global Variables ===============================
+let currentUser = null;
+let usersTrips = null;
 //Event Listeners ================================
 window.addEventListener('load', () => {
   allData.then(data => {
@@ -17,3 +20,8 @@ window.addEventListener('load', () => {
 });
 
 //Data Functions =====================================
+const getRandomUser = () => {
+
+}
+
+const
