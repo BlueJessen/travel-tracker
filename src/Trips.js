@@ -8,9 +8,12 @@ class Trips {
   }
 
   findAllTripsByUser(id) {
-    
+    return this.trips.filter(trip => trip.userID === id);
   }
 
+  findTripsOnDate(date) {
+      return this.trips.filter(trip => trip.date === date);
+  }
 
 }
 
