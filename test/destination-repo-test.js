@@ -19,6 +19,10 @@ describe('Destinations', () => {
     expect(destinationRepo).to.be.an.instanceof(DestinationRepo);
   });
 
+  it("should have destinations", function () {
+    expect(destinationRepo.destinations).to.deep.equal(destinations);
+  });
+
   it("should be able to find a destination using its ID", function () {
     expect(destinationRepo.findDestination(3)).to.deep.equal(destinations[4]);
   });

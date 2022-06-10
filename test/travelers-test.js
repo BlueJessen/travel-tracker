@@ -20,8 +20,9 @@ describe('TravelerRepo', () => {
   });
 
   it('should be able to find a user by ID', function () {
-    expect(newTravelers.findUser(2)).to.equal(travelers[1]);
+    expect(newTravelers.findUser(2)).to.deep.equal(travelers[1]);
   });
+
 
 
 
