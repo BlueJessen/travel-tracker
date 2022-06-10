@@ -10,13 +10,10 @@ import { getPromise, allData } from './apiCalls';
 //Event Listeners ================================
 window.addEventListener('load', () => {
   allData.then(data => {
-    console.log(data);
+    let trips = data[0];
+    let destinations = data[1];
+    let travelers = data[2];
   }).catch(error => console.log(error));
 });
 
 //Data Functions =====================================
-// const assignData = () => {
-//   allData.then(data => {
-//     console.log(allData);
-//   }).catch(error => console.log(error));
-// }
