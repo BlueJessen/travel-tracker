@@ -15,12 +15,12 @@ describe('TravelerRepo', () => {
     expect(TravelerRepo).to.be.a('function');
   });
 
-  it('should be an instance of TravelersRepo', function () {
+  it('should be an instance of TravelerRepo', function () {
     expect(newTravelers).to.be.an.instanceof(TravelerRepo);
   });
 
   it('should be able to find a user by ID', function () {
-    expect(newTravelers.findUser(2)).to.equal(travelers[1]));
+    expect(newTravelers.findUser(2)).to.equal(travelers[1]);
   });
 
 

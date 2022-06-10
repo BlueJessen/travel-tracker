@@ -14,7 +14,7 @@ describe('Destination', () => {
   expect(Destination).to.be.a('function');
   });
 
-  it('should be an instance of Destinations', function() {
+  it('should be an instance of Destination', function() {
     expect(destination).to.be.an.instanceof(Destination);
   });
 
@@ -23,7 +23,7 @@ describe('Destination', () => {
   });
 
   it("should have a name", function() {
-    expect(destination.name).to.equal(destinations[1].name);
+    expect(destination.name).to.equal(destinations[1].destination);
   });
 
   it("should have an image url", function() {
