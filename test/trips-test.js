@@ -23,18 +23,13 @@ describe('Trips', () => {
     expect(tripRepo.findTrip(11)).to.be.equal(undefined);
   });
 
-  it('should be able to find trip by user id', function () {
-    expect(tripRepo.findTripByUser(2)).to.be.equal(trips[3]);
-    expect(tripRepo.findTripByUser(8)).to.be.equal(undefined);
-  });
-
   it('should be able to find all trips by a user', function () {
-    expect(tripRepo.findAllTripsByUser(2)).to.be.equal([trips[3],trips[0]]);
+    expect(tripRepo.findAllTripsByUser(2)).to.deep.equal([trips[0],trips[3]]);
   });
 
   it('should be able to find all trips on a date', function () {
-    expect(tripRepo.findTripsOnDate('2022/04/30')).to.be.equal([trips[0],trips[4]]);
-    expect(tripRepo.findTripsOnDate('2022/05/09')).to.be.equal(undefined);
+    expect(tripRepo.findTripsOnDate('2022/04/30')).to.deep.equal([trips[0],trips[4]]);
+    expect(tripRepo.findTripsOnDate('2022/05/09')).to.deep.equal([]);
   });
 
 
