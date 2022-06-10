@@ -20,18 +20,22 @@ describe('Trips', () => {
 
   it('should be able to find trip by id', function () {
     expect(tripRepo.findTrip(4)).to.be.equal(trips[3]);
+    expect(tripRepo.findTrip(11)).to.be.equal('No Trips with this ID');
   });
 
   it('should be able to find trip by user id', function () {
     expect(tripRepo.findTripByUser(2)).to.be.equal(trips[3]);
+    expect(tripRepo.findTripByUser(8)).to.be.equal('No trips with this User');
   });
 
   it('should be able to find all trips by a user', function () {
     expect(tripRepo.findAllTripsByUser(2)).to.be.equal([trips[3],trips[0]]);
   });
 
-  it('should have an id', function () {
-    expect
+  it('should be able to find all trips on a date', function () {
+    expect(tripRepo.findTripsOnDate('2022/04/30')).to.be.equal([trips[0],trips[4]]);
+    expect(tripRepo.findTripsOnDate('2022/05/09')).to.be.equal('No Trips On Date');
   });
+
 
 });
