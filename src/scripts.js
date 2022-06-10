@@ -20,8 +20,24 @@ window.addEventListener('load', () => {
 });
 
 //Data Functions =====================================
-const getRandomUser = () => {
-
+const setUpTravelerRepo = (travelersArray) => {
+  let travelers = travelersArray.map((traveler) => {
+    return new Traveler(traveler);
+  })
+  let travelerRepo = new TravelerRepo(travelers);
+  getRandomUser(travelerRepo)
+  return travelerRepo
 }
 
-const
+const getRandomUser = (travelers) => {
+  let randomIndex = Math.floor(Math.random() * travelers.travelers.length)
+  currentUser = travelers.travelers[randomIndex];
+}
+
+const setUpTripsRepo = (trips) => {
+  return new Trips(trips);
+}
+
+const findUsersTrips = (userID, trips) => {
+  usersTrips = trips.findAllTripsByUser(userID);
+}
