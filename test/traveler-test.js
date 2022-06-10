@@ -7,7 +7,7 @@ describe('Traveler', () => {
   let traveler = null;
 
   beforeEach( () => {
-    traveler = new Traveler(travelers[3]);
+    traveler = new Traveler(travelers[4]);
   });
 
   it('should be a function', function () {
