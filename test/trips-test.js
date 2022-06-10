@@ -23,11 +23,6 @@ describe('Trips', () => {
     expect(tripRepo.findTrip(11)).to.be.equal(undefined);
   });
 
-  it('should be able to find trip by user id', function () {
-    expect(tripRepo.findTripByUser(2)).to.be.equal(trips[3]);
-    expect(tripRepo.findTripByUser(8)).to.be.equal(undefined);
-  });
-
   it('should be able to find all trips by a user', function () {
     expect(tripRepo.findAllTripsByUser(2)).to.be.equal([trips[3],trips[0]]);
   });
