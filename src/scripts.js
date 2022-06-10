@@ -7,11 +7,16 @@ import DestinationRepo from './DestinationRepo.js'
 import Trips from './Trips.js';
 import { getPromise, allData } from './apiCalls';
 
-
-window.addEventListener('load', assignData);
-
-const assignData = () => {
+//Event Listeners ================================
+window.addEventListener('load', () => {
   allData.then(data => {
-    console.log(allData[0]);
+    console.log(data);
   }).catch(error => console.log(error));
-}
+});
+
+//Data Functions =====================================
+// const assignData = () => {
+//   allData.then(data => {
+//     console.log(allData);
+//   }).catch(error => console.log(error));
+// }
