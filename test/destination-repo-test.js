@@ -1,4 +1,5 @@
-import { expect } from 'chai';
+import chai from 'chai';
+const expect = chai.expect;
 import {destinations} from './test-data.js';
 import DestinationRepo from '../src/DestinationRepo.js'
 import Destination from '../src/Destination.js'
@@ -6,12 +7,12 @@ import Destination from '../src/Destination.js'
 describe('Destinations', () => {
   let destinationRepo = null;
 
-  it('should be a function', function () {
-    expect(DestinationRepo).to.be.a('function');
-  });
-
   beforeEach( () => {
     destinationRepo = new DestinationRepo(destinations);
+  });
+
+  it('should be a function', function () {
+    expect(DestinationRepo).to.be.a('function');
   });
 
   it('should be an instance of Destinations', function () {
