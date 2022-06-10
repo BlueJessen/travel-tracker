@@ -5,10 +5,10 @@ import Traveler from '../src/Traveler.js';
 import TravelerRepo from '../src/TravelerRepo.js';
 
 describe('TravelerRepo', () => {
-  let travelers = null;
+  let newTravelers = null;
 
   beforeEach( () => {
-    travelers = new TravelerRepo(travelers);
+    newTravelers = new TravelerRepo(travelers);
   });
 
   it('should be a function', function () {
@@ -16,8 +16,13 @@ describe('TravelerRepo', () => {
   });
 
   it('should be an instance of TravelersRepo', function () {
-    expect(travelers).to.be.an.instanceof(TravelerRepo);
+    expect(newTravelers).to.be.an.instanceof(TravelerRepo);
   });
+
+  it('should be able to find a user by ID', function () {
+    expect(newTravelers.findUser(2)).to.equal(travelers[1]));
+  });
+
 
 
 });
