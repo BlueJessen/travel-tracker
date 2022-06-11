@@ -34,11 +34,11 @@ window.addEventListener('load', () => {
   }).catch(error => console.log(error));
 });
 
-newTripButton.addEventListener('click', showForm);
+// newTripButton.addEventListener('click', showForm);
 
 //Data Functions =====================================
 const showForm = () => {
-  
+
 }
 
 const setInitialData = (trips, travelers) => {
