@@ -1,9 +1,9 @@
 import chai from 'chai';
 const expect = chai.expect;
 import { destinations, trips, travelers } from './test-data.js';
-import TripRepo from '../src/TripRepo.js';
+import Trip from '../src/Trip.js';
 
-describe('TripRepo', () => {
+describe('Trip', () => {
   let trip = null;
 
   beforeEach( () => {
@@ -43,7 +43,7 @@ describe('TripRepo', () => {
   });
 
   it('should have a status', function () {
-    expect(trip.status).to.equal(2);
+    expect(trip.status).to.equal('approved');
   });
 
   it('should have suggested activties', function () {
