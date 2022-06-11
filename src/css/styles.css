@@ -5,6 +5,8 @@
 html {
   width: 100vw;
   height: 100vh;
+  font-family: 'Didact Gothic', sans-serif;
+  color: #172840;
   background-color: #6d9fad;
   background-size: cover;
   background-repeat: no-repeat;
@@ -35,6 +37,7 @@ nav {
 .top-nav {
   margin: 0;
   border: 0;
+  padding: 10px;
 }
 
 .wrapper {
@@ -80,7 +83,7 @@ nav {
   color: white;
   text-align: center;
   border-radius: 5px;
-  background-color: teal;
+  background-color: rgb(119, 156, 166,.8);
 }
 
 .upcoming-trip-card-img {
@@ -94,7 +97,7 @@ nav {
   color: white;
   text-align: center;
   border-radius: 5px;
-  background-color: teal;
+  background-color: rgb(119, 156, 166,.8);
 }
 
 .trip-card-img {
@@ -128,10 +131,11 @@ nav {
 }
 
 .total-amount-container {
-  background-color: #878d94;
   width: 25vw;
   height: 15vh;
   text-align: center;
+  background-color: rgb(179, 227, 245, .8);
+  border-radius: 5px;
 }
 
 .pending-trips-container {

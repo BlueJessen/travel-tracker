@@ -106,7 +106,7 @@ const calculateTravelCostThisYear = () => {
 //DOM functions ==============================
 
 const welcomeUser = () => {
-  topNav.innerText = `Welcome ${currentUser.name}!`;
+  topNav.innerText = `  Welcome ${currentUser.name}!`;
 }
 const showTotalCost = (sum) => {
   totalThisYear.innerText = `$ ${sum}.00`;
