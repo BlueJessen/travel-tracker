@@ -1,5 +1,5 @@
 * {
-  border: solid red 2px;
+  /* border: solid red 2px; */
 }
 
 html {
@@ -45,6 +45,7 @@ nav {
 .trip-view:hover {
   cursor: pointer;
 }
+
 .upcoming-trips-container {
   width: 35vw;
   height: 50vh;
@@ -53,14 +54,16 @@ nav {
 
 .upcoming-trip-card {
   width: 10vw;
-  height: 10vh;
+  height: 18vh;
   color: white;
+  text-align: center;
   border-radius: 5px;
-  background-color: salmon;
+  background-color: teal;
 }
+
 .trip-card-img {
-  width: inherit;
-  height: inherit;
+  width: 10vw;
+  height: 10vh;
 }
 
 .trip-name {
@@ -76,9 +79,15 @@ border: 0;
 }
 
 .past-trips-container {
+  display: grid;
+  grid-template-rows: repeat(4, 100px);
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 50px;
   background-color: #eeeeee;
   width: 35vw;
   height: 25vh;
+  overflow: scroll;
 }
 
 .total-amount-container {

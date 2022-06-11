@@ -19,7 +19,7 @@ let topNav = document.querySelector('.top-nav');
 //Global Variables ===============================
 let currentUser = null;
 let usersTrips = null;
-let date = '2022/05/10';
+let date = '2022/05/11';
 
 //Event Listeners ================================
 window.addEventListener('load', () => {
@@ -45,6 +45,9 @@ const setUpInitialDisplay = (destinations) => {
   let repo = setUpDestinationsRepo(destinations);
   setTripDestinations(repo);
   getUpcomingTrips();
+  getPastTrips();
+  getPendingTrips();
+  calculateTravelCostThisYear();
 }
 
 const setTripDestinations = (repo) => {
@@ -87,6 +90,18 @@ const setUpDestinationsRepo = (destinations) => {
   return new DestinationRepo(destinationsArray);
 }
 
+const calculateTravelCostThisYear = () => {
+  let sum = 0;
+  usersTrips.forEach((trip) => {
+    if(trip.date.includes('2022')) {
+      let lodging = ((trip.travelers)*(trip.destination.lodgingCost))*trip.duration;
+      let flights = (trip.travelers*trip.destination.flightCost)*2;
+      sum += (lodging+flights)+((lodging+flights)*.10);
+    }
+  })
+  console.log(sum);
+}
+
 //DOM functions ==============================
 
 const getUpcomingTrips = () => {
@@ -103,9 +118,25 @@ const getUpcomingTrips = () => {
 }
 
 const getPastTrips = () => {
-  userTrips.forEach((trip) => {
+  usersTrips.forEach((trip) => {
     if(trip.date < date) {
+      pastTrips.innerHTML += `<div class= 'upcoming-trip-card'>
+        <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <h1 class='trip-name'>${trip.destination.name}</h1>
+        <h2 class='trip-date'>${trip.date}</h2>
+      </div>`;
+    }
+  })
+}
 
+const getPendingTrips = () => {
+  usersTrips.forEach((trip) => {
+    if(trip.status === 'pending') {
+      pendingTrips.innerHTML += `<div class= 'upcoming-trip-card'>
+        <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <h1 class='trip-name'>${trip.destination.name}</h1>
+        <h2 class='trip-date'>${trip.date}</h2>
+      </div>`;
     }
   })
 }
