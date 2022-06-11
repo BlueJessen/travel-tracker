@@ -1,21 +1,21 @@
 import chai from 'chai';
 const expect = chai.expect;
 import { destinations, trips, travelers } from './test-data.js';
-import Trips from '../src/Trips.js';
+import TripRepo from '../src/TripRepo.js';
 
-describe('Trips', () => {
+describe('TripRepo', () => {
   let tripRepo = null;
 
   beforeEach( () => {
-    tripRepo = new Trips(trips);
+    tripRepo = new TripRepo(trips);
   });
 
   it('should be a function', function () {
-    expect(Trips).to.be.a('function');
+    expect(TripRepo).to.be.a('function');
   });
 
   it('should be an instance of Trips', function () {
-    expect(tripRepo).to.be.an.instanceof(Trips);
+    expect(tripRepo).to.be.an.instanceof(TripRepo);
   });
 
   it('should be able to find trip by id', function () {
