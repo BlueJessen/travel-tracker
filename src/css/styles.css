@@ -24,7 +24,7 @@ button:hover {
 
 nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   height: 7vh;
   padding: 10px;
   width: 100vw;
@@ -32,6 +32,21 @@ nav {
   border: 0;
   margin: 0;
   background-color: #c8edfa;
+}
+
+.search-destinations {
+  position: fixed;
+  height: 6vh;
+  margin-left: 70vw;
+  border: 0;
+}
+
+.search-button {
+  position: fixed;
+  height: 6vh;
+  margin-left: 80vw;
+  border: none;
+  background-color: #6d9fad;
 }
 
 .top-nav {
