@@ -49,9 +49,7 @@ const setUpInitialDisplay = (destinations) => {
 
 const setTripDestinations = (repo) => {
   usersTrips.forEach((trip) => {
-    console.log(trip);
   let tripDestination = repo.findDestination(trip.destination);
-  console.log(tripDestination);
   trip.destination = tripDestination;
 });
 }
@@ -76,9 +74,10 @@ const setUpTripsRepo = (trips) => {
 
 const findUsersTrips = (userID, trips) => {
   usersTrips = trips.findAllTripsByUser(userID);
-  usersTrips.map((trip) => {
+  let newTrips = usersTrips.map((trip) => {
     return new Trip(trip);
   });
+  usersTrips = newTrips;
 }
 
 const setUpDestinationsRepo = (destinations) => {
@@ -92,7 +91,6 @@ const setUpDestinationsRepo = (destinations) => {
 
 const getUpcomingTrips = () => {
   usersTrips.forEach((trip) => {
-    console.log(trip.destination)
     if(trip.date > date) {
       upcomingTrips.innerHTML += `<div class= 'upcoming-trip-card'>
         <h1>${trip.destination}</h1>
