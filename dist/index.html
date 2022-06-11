@@ -7,25 +7,33 @@
   <title>Travel Tracker</title>
 </head>
 <body>
-  <nav>Welcome!
+  <nav>
+    <h1 class='top-nav'></h1>
     <input placeholder='search'></input>
     <button>Search</button>
   </nav>
   <main>
     <section class='wrapper'>
       <section class= 'left-side-page'>
+        <h1>Upcoming Trips</h1>
         <section class= 'upcoming-trips-container trip-view'>
-          <button>List view</button>
+
         </section>
+        <h1>Past Trips</h1>
         <section class= 'past-trips-container trip-view'>
         </section>
       </section>
       <section class= 'right-side-page'>
         <section class='total-amount-container'>
+          <h1>Total Amount Spent On Trips This Year</h1>
+          <h2 class='total-amount'></h2>
         </section>
-        <section class= 'pending-trips-container trip-view'>
-          <button>List View</button>
-        </section>
+        <div class='pending-trips'>
+          <h1>Pending Trips</h1>
+          <section class= 'pending-trips-container trip-view'>
+            <button>List View</button>
+          </section>
+        </div>
       </section>
     </section>
   </main>

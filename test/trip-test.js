@@ -27,7 +27,7 @@ describe('Trip', () => {
   });
 
   it('should have a destinationID', function () {
-    expect(trip.destinationID).to.equal(2);
+    expect(trip.destination).to.equal(2);
   });
 
   it('should have travelers', function () {
