@@ -5,7 +5,7 @@
 html {
   width: 100vw;
   height: 100vh;
-  background-image: url(https://images.squarespace-cdn.com/content/v1/5da62288c891f33b0c9230c6/1571214953328-X7E7J6W83S99TECZ5155/SimmonsTexasWorldMap.jpg?format=1500w);
+  background-color: #6d9fad;
   background-size: cover;
   background-repeat: no-repeat;
   background-blend-mode: saturation;
@@ -64,12 +64,31 @@ nav {
 }
 
 .upcoming-trips-container {
+  padding: 10px;
   width: 35vw;
   height: 50vh;
-  background-color: #878d94;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(179, 227, 245, .8);
+  overflow: scroll;
 }
 
 .upcoming-trip-card {
+  width: 24vw;
+  height: 36vh;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  background-color: teal;
+}
+
+.upcoming-trip-card-img {
+  width: 24vw;
+  height: 26vh;
+}
+
+.trip-card {
   width: 10vw;
   height: 18vh;
   color: white;
@@ -96,12 +115,13 @@ nav {
 }
 
 .past-trips-container {
+  padding: 10px;
   display: grid;
   grid-template-rows: repeat(4, 100px);
   grid-template-columns: repeat(3, 1fr);
   grid-column-gap: 20px;
   grid-row-gap: 50px;
-  background-color: #eeeeee;
+  background-color: rgb(179, 227, 245, .8);
   width: 35vw;
   height: 25vh;
   overflow: scroll;
