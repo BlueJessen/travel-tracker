@@ -13,9 +13,9 @@ let usersTrips = null;
 //Event Listeners ================================
 window.addEventListener('load', () => {
   allData.then(data => {
-    let trips = data[0];
-    let destinations = data[1];
-    let travelers = data[2];
+    let trips = data[0].trips;
+    let destinations = data[1].destinations;
+    let travelers = data[2].travlers;
   }).catch(error => console.log(error));
 });
 
@@ -40,4 +40,11 @@ const setUpTripsRepo = (trips) => {
 
 const findUsersTrips = (userID, trips) => {
   usersTrips = trips.findAllTripsByUser(userID);
+}
+
+const setUpDestinationsRepo = (destinations) {
+  let destinationsArray = destinations.map((destination) => {
+    return new Destination(destination);
+  })
+  let destinationRepo = new DestinationRepo(destinationsArray);
 }
