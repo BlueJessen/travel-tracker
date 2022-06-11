@@ -16,26 +16,41 @@ let pendingTrips = document.querySelector('.pending-trips-container');
 let totalThisYear = document.querySelector('.total-amount-container');
 let topNav = document.querySelector('.top-nav');
 
-
 //Global Variables ===============================
 let currentUser = null;
 let usersTrips = null;
+let date = '2022/05/10';
+
 //Event Listeners ================================
 window.addEventListener('load', () => {
   allData.then(data => {
     let trips = data[0].trips;
     let destinations = data[1].destinations;
     let travelers = data[2].travelers;
-    setInitialData(trips, destinations, travelers);
+    setInitialData(trips, travelers);
+    setUpInitialDisplay(destinations)
   }).catch(error => console.log(error));
 });
 
 //Data Functions =====================================
-const setInitialData = (trips, destinations, travelers) => {
+const setInitialData = (trips, travelers) => {
   setUpTravelerRepo(travelers);
   findUsersTrips(currentUser.id, setUpTripsRepo(trips));
   console.log(currentUser);
   console.log(usersTrips);
+}
+const setUpInitialDisplay = (destinations) => {
+  let repo = setUpDestinationsRepo(destinations);
+  setTripDestinations(repo);
+  getUpcomingTrips();
+
+}
+
+const setTripDestinations = (destinations) => {
+  userTrips.forEach((trip) => {
+  let tripDestination = destinations.findDestination(trip.destinationID);
+  trip.destination
+  })
 }
 
 const getRandomUser = (travelers) => {
@@ -48,8 +63,8 @@ const setUpTravelerRepo = (travelersArray) => {
     return new Traveler(traveler);
   })
   let travelerRepo = new TravelerRepo(travelers);
-  getRandomUser(travelerRepo)
-  return travelerRepo
+  getRandomUser(travelerRepo);
+  return travelerRepo;
 }
 
 const setUpTripsRepo = (trips) => {
@@ -64,7 +79,18 @@ const setUpDestinationsRepo = (destinations) => {
   let destinationsArray = destinations.map((destination) => {
     return new Destination(destination);
   })
-  let destinationRepo = new DestinationRepo(destinationsArray);
+  return new DestinationRepo(destinationsArray);
 }
 
 //DOM functions ==============================
+
+const getUpcomingTrips = () => {
+  usersTrips.forEach((trip) => {
+    if(trip.date > date) {
+      upcomingTrips.innerHTML += `<div class= 'upcoming-trip-card'>
+        <h1>${trip.destinationID}</h1>
+        <h2 class='trip-date'>${trip.date}</h2>
+      </div>`;
+    }
+  });
+}
