@@ -39,18 +39,21 @@ const setInitialData = (trips, travelers) => {
   console.log(currentUser);
   console.log(usersTrips);
 }
+
 const setUpInitialDisplay = (destinations) => {
+  console.log(destinations);
   let repo = setUpDestinationsRepo(destinations);
   setTripDestinations(repo);
   getUpcomingTrips();
-
 }
 
-const setTripDestinations = (destinations) => {
-  userTrips.forEach((trip) => {
-  let tripDestination = destinations.findDestination(trip.destinationID);
-  trip.destination
-  })
+const setTripDestinations = (repo) => {
+  usersTrips.forEach((trip) => {
+    console.log(trip);
+  let tripDestination = repo.findDestination(trip.destination);
+  console.log(tripDestination);
+  trip.destination = tripDestination;
+});
 }
 
 const getRandomUser = (travelers) => {
@@ -73,6 +76,9 @@ const setUpTripsRepo = (trips) => {
 
 const findUsersTrips = (userID, trips) => {
   usersTrips = trips.findAllTripsByUser(userID);
+  usersTrips.map((trip) => {
+    return new Trip(trip);
+  });
 }
 
 const setUpDestinationsRepo = (destinations) => {
@@ -86,9 +92,10 @@ const setUpDestinationsRepo = (destinations) => {
 
 const getUpcomingTrips = () => {
   usersTrips.forEach((trip) => {
+    console.log(trip.destination)
     if(trip.date > date) {
       upcomingTrips.innerHTML += `<div class= 'upcoming-trip-card'>
-        <h1>${trip.destinationID}</h1>
+        <h1>${trip.destination}</h1>
         <h2 class='trip-date'>${trip.date}</h2>
       </div>`;
     }
