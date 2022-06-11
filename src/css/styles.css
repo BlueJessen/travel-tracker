@@ -5,6 +5,15 @@
 html {
   width: 100vw;
   height: 100vh;
+  background-image: url(https://images.squarespace-cdn.com/content/v1/5da62288c891f33b0c9230c6/1571214953328-X7E7J6W83S99TECZ5155/SimmonsTexasWorldMap.jpg?format=1500w);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: saturation;
+}
+
+body {
+  border: none;
+  margin: 0;
 }
 
 button:hover {
@@ -13,11 +22,19 @@ button:hover {
 
 nav {
   display: flex;
-  justify-content: flex-end;
-  height: 5vh;
+  justify-content: space-between;
+  height: 7vh;
+  padding: 10px;
   width: 100vw;
+  font-size: 2rem;
   border: 0;
   margin: 0;
+  background-color: #c8edfa;
+}
+
+.top-nav {
+  margin: 0;
+  border: 0;
 }
 
 .wrapper {
@@ -99,5 +116,10 @@ border: 0;
 .pending-trips-container {
   width: 30vw;
   height: 30vh;
-  background-color: #eeeeee;
+}
+
+.pending-trips {
+  width:30vw;
+  height: 45vh;
+  background-color: rgb(179, 227, 245, .8);
 }

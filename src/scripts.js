@@ -13,7 +13,7 @@ import { getPromise, allData } from './apiCalls';
 let upcomingTrips = document.querySelector('.upcoming-trips-container');
 let pastTrips = document.querySelector('.past-trips-container');
 let pendingTrips = document.querySelector('.pending-trips-container');
-let totalThisYear = document.querySelector('.total-amount-container');
+let totalThisYear = document.querySelector('.total-amount');
 let topNav = document.querySelector('.top-nav');
 
 //Global Variables ===============================
@@ -48,6 +48,7 @@ const setUpInitialDisplay = (destinations) => {
   getPastTrips();
   getPendingTrips();
   calculateTravelCostThisYear();
+  welcomeUser();
 }
 
 const setTripDestinations = (repo) => {
@@ -99,10 +100,17 @@ const calculateTravelCostThisYear = () => {
       sum += (lodging+flights)+((lodging+flights)*.10);
     }
   })
-  console.log(sum);
+  showTotalCost(sum);
 }
 
 //DOM functions ==============================
+
+const welcomeUser = () => {
+  topNav.innerText = `Welcome ${currentUser.name}!`;
+}
+const showTotalCost = (sum) => {
+  totalThisYear.innerText = `$ ${sum}.00`;
+}
 
 const getUpcomingTrips = () => {
   usersTrips.forEach((trip) => {
