@@ -92,10 +92,20 @@ const setUpDestinationsRepo = (destinations) => {
 const getUpcomingTrips = () => {
   usersTrips.forEach((trip) => {
     if(trip.date > date) {
+      console.log(trip.destination.name);
       upcomingTrips.innerHTML += `<div class= 'upcoming-trip-card'>
-        <h1>${trip.destination}</h1>
+        <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <h1 class='trip-name'>${trip.destination.name}</h1>
         <h2 class='trip-date'>${trip.date}</h2>
       </div>`;
     }
   });
+}
+
+const getPastTrips = () => {
+  userTrips.forEach((trip) => {
+    if(trip.date < date) {
+
+    }
+  })
 }
