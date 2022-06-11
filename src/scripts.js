@@ -1,5 +1,6 @@
 
 import './css/styles.css';
+import './images/turing-logo.png';
 import Traveler from './Traveler.js';
 import TravelerRepo from './TravelerRepo.js'
 import Destination from './Destination.js'

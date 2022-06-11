@@ -51,6 +51,11 @@ nav {
   background-color: #878d94;
 }
 
+.upcoming-trip-card {
+  width: 5vw;
+  height: 5vh;
+}
+
 .past-trips-container {
   background-color: #eeeeee;
   width: 35vw;
