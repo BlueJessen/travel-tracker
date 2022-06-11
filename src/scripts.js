@@ -1,6 +1,6 @@
 
 import './css/styles.css';
-import './images/turing-logo.png';
+// import 'images/search-free-icon-font.svg';
 import Traveler from './Traveler.js';
 import TravelerRepo from './TravelerRepo.js'
 import Destination from './Destination.js'
@@ -15,6 +15,8 @@ let pastTrips = document.querySelector('.past-trips-container');
 let pendingTrips = document.querySelector('.pending-trips-container');
 let totalThisYear = document.querySelector('.total-amount');
 let topNav = document.querySelector('.top-nav');
+
+let newTripButton = document.querySelector('.create-new-trip');
 
 //Global Variables ===============================
 let currentUser = null;
@@ -32,7 +34,13 @@ window.addEventListener('load', () => {
   }).catch(error => console.log(error));
 });
 
+newTripButton.addEventListener('click', showForm);
+
 //Data Functions =====================================
+const showForm = () => {
+  
+}
+
 const setInitialData = (trips, travelers) => {
   setUpTravelerRepo(travelers);
   findUsersTrips(currentUser.id, setUpTripsRepo(trips));

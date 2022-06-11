@@ -20,6 +20,7 @@ body {
 
 button:hover {
   cursor: pointer;
+  background-color: #ade0e0;
 }
 
 nav {
@@ -46,6 +47,16 @@ nav {
   height: 6vh;
   margin-left: 80vw;
   border: none;
+  /* background-image: url('images/search-free-icon-font.svg'); */
+  background-color: #6d9fad;
+}
+
+.create-new-trip {
+  position: fixed;
+  height: 6vh;
+  margin-left: 85vw;
+  border: none;
+  /* background-image: url('images/search-free-icon-font.svg'); */
   background-color: #6d9fad;
 }
 
