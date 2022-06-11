@@ -84,9 +84,9 @@ nav {
 }
 
 .trip-name {
-text-align: center;
-margin: 0;
-border: 0;
+  text-align: center;
+  margin: 0;
+  border: 0;
 }
 
 .trip-date {
@@ -111,6 +111,7 @@ border: 0;
   background-color: #878d94;
   width: 25vw;
   height: 15vh;
+  text-align: center;
 }
 
 .pending-trips-container {
@@ -122,4 +123,5 @@ border: 0;
   width:30vw;
   height: 45vh;
   background-color: rgb(179, 227, 245, .8);
+  text-align: center;
 }
