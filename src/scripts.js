@@ -24,6 +24,9 @@ let usersTrips = null;
 let date = '2022/05/11';
 
 //Event Listeners ================================
+
+newTripButton.addEventListener('click', showForm);
+
 window.addEventListener('load', () => {
   allData.then(data => {
     let trips = data[0].trips;
@@ -34,10 +37,8 @@ window.addEventListener('load', () => {
   }).catch(error => console.log(error));
 });
 
-// newTripButton.addEventListener('click', showForm);
-
 //Data Functions =====================================
-const showForm = () => {
+function showForm() {
 
 }
 
