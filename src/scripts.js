@@ -1,6 +1,6 @@
 
 import './css/styles.css';
-import './images/turing-logo.png';
+// import 'images/search-free-icon-font.svg';
 import Traveler from './Traveler.js';
 import TravelerRepo from './TravelerRepo.js'
 import Destination from './Destination.js'
@@ -16,12 +16,17 @@ let pendingTrips = document.querySelector('.pending-trips-container');
 let totalThisYear = document.querySelector('.total-amount');
 let topNav = document.querySelector('.top-nav');
 
+let newTripButton = document.querySelector('.create-new-trip');
+
 //Global Variables ===============================
 let currentUser = null;
 let usersTrips = null;
 let date = '2022/05/11';
 
 //Event Listeners ================================
+
+newTripButton.addEventListener('click', showForm);
+
 window.addEventListener('load', () => {
   allData.then(data => {
     let trips = data[0].trips;
@@ -33,6 +38,10 @@ window.addEventListener('load', () => {
 });
 
 //Data Functions =====================================
+function showForm() {
+
+}
+
 const setInitialData = (trips, travelers) => {
   setUpTravelerRepo(travelers);
   findUsersTrips(currentUser.id, setUpTripsRepo(trips));
@@ -106,7 +115,7 @@ const calculateTravelCostThisYear = () => {
 //DOM functions ==============================
 
 const welcomeUser = () => {
-  topNav.innerText = `Welcome ${currentUser.name}!`;
+  topNav.innerText = `  Welcome ${currentUser.name}!`;
 }
 const showTotalCost = (sum) => {
   totalThisYear.innerText = `$ ${sum}.00`;
@@ -117,7 +126,7 @@ const getUpcomingTrips = () => {
     if(trip.date > date) {
       console.log(trip.destination.name);
       upcomingTrips.innerHTML += `<div class= 'upcoming-trip-card'>
-        <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <img class='upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
         <h2 class='trip-date'>${trip.date}</h2>
       </div>`;
@@ -128,7 +137,7 @@ const getUpcomingTrips = () => {
 const getPastTrips = () => {
   usersTrips.forEach((trip) => {
     if(trip.date < date) {
-      pastTrips.innerHTML += `<div class= 'upcoming-trip-card'>
+      pastTrips.innerHTML += `<div class= 'trip-card'>
         <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
         <h2 class='trip-date'>${trip.date}</h2>
@@ -140,7 +149,7 @@ const getPastTrips = () => {
 const getPendingTrips = () => {
   usersTrips.forEach((trip) => {
     if(trip.status === 'pending') {
-      pendingTrips.innerHTML += `<div class= 'upcoming-trip-card'>
+      pendingTrips.innerHTML += `<div class= 'trip-card'>
         <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
         <h2 class='trip-date'>${trip.date}</h2>
