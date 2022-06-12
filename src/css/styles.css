@@ -35,32 +35,6 @@ nav {
   background-color: #c8edfa;
 }
 
-.modal__overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal__container {
-  background-color: #fff;
-  padding: 30px;
-  max-width: 500px;
-  max-height: 100vh;
-  border-radius: 4px;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.modul_close {
-  display: none;
-}
-
 .search-destinations {
   position: fixed;
   height: 6vh;
@@ -118,10 +92,20 @@ nav {
   cursor: pointer;
 }
 
+.present-trip {
+  margin: 10px;
+  width: 35vw;
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(179, 227, 245, .8);
+}
+
 .upcoming-trips-container {
   padding: 10px;
   width: 35vw;
-  height: 50vh;
+  height: 30vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -191,8 +175,9 @@ nav {
 }
 
 .pending-trips-container {
+  margin-top: 40px;
   width: 30vw;
-  height: 30vh;
+  height: 20vh;
 }
 
 .pending-trips {
@@ -200,4 +185,8 @@ nav {
   height: 45vh;
   background-color: rgb(179, 227, 245, .8);
   text-align: center;
+}
+
+.hidden {
+  display: none;
 }

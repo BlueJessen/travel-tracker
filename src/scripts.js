@@ -1,7 +1,5 @@
 
 import './css/styles.css';
-// import 'images/search-free-icon-font.svg';
-import MicroModal from 'micromodal';
 import Traveler from './Traveler.js';
 import TravelerRepo from './TravelerRepo.js'
 import Destination from './Destination.js'
@@ -14,6 +12,8 @@ import { getPromise, allData } from './apiCalls';
 let upcomingTrips = document.querySelector('.upcoming-trips-container');
 let pastTrips = document.querySelector('.past-trips-container');
 let pendingTrips = document.querySelector('.pending-trips-container');
+let presentTrip = document.querySelector('.present-trip-container');
+let presentTripContainer = document.querySelector('.trip-container');
 let totalThisYear = document.querySelector('.total-amount');
 let topNav = document.querySelector('.top-nav');
 let upcomingModuls = document.querySelector('.upcoming-moduls');
@@ -23,7 +23,9 @@ let newTripButton = document.querySelector('.create-new-trip');
 //Global Variables ===============================
 let currentUser = null;
 let usersTrips = null;
-let date = '2022/05/11';
+let date = new Date();
+
+
 
 //Event Listeners ================================
 
@@ -35,6 +37,7 @@ window.addEventListener('load', () => {
     let destinations = data[1].destinations;
     let travelers = data[2].travelers;
     setInitialData(trips, travelers);
+    formatDate();
     setUpInitialDisplay(destinations)
   }).catch(error => console.log(error));
 });
@@ -42,6 +45,16 @@ window.addEventListener('load', () => {
 //Data Functions =====================================
 function showForm() {
 
+}
+
+const formatDate = () => {
+  let today = '';
+  let month = date.getMonth();
+  if(month < 10) {
+    month = `0${month}`;
+  }
+  today += `20${date.getFullYear()}/${month}/${date.getDate()}`;
+  date = today;
 }
 
 const setInitialData = (trips, travelers) => {
@@ -56,6 +69,7 @@ const setUpInitialDisplay = (destinations) => {
   let repo = setUpDestinationsRepo(destinations);
   setTripDestinations(repo);
   getUpcomingTrips();
+  getPresentTrips();
   getPastTrips();
   getPendingTrips();
   calculateTravelCostThisYear();
@@ -115,6 +129,11 @@ const calculateTravelCostThisYear = () => {
 }
 
 //DOM functions ==============================
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
 
 const welcomeUser = () => {
   topNav.innerText = `  Welcome ${currentUser.name}!`;
@@ -123,74 +142,57 @@ const showTotalCost = (sum) => {
   totalThisYear.innerText = `$ ${sum}.00`;
 }
 
-const createUpcomingModuls = () => {
-  let num = 1;
-  usersTrips.forEach((trip) => {
-    if(trip.date > date) {
-      upcomingModuls.innerHTML +=
-      `<div class="modal" id="modal-${num}" aria-hidden="true">
-  <div tabindex="-1" data-micromodal-close>
-    <div role="dialog" aria-modal="true" aria-labelledby="modal-1-title" >
-      <header>
-        <h2 id="modal-1-title">
-          ${trip.destination.name}
-        </h2>
-        <button aria-label="Close modal" data-micromodal-close></button>
-      </header>
-      <div id="modal-1-content">
-      ${trip.destination}
-      </div>
-    </div>
-  </div>
-</div>`;
+const getPresentTrips = () => {
+  let days = [];
+let thisYear = usersTrips.filter((trip) => {
+    let newDate = new Date(trip.date);
+    let today = new Date();
+    if(newDate.getFullYear() === today.getFullYear()){
+      return trip;
     }
-    num++;
-  })
+  });
+  if(thisYear.includes(date)) {
+    displayPresentTrip(thisYear);
+  }
+}
 
+const displayPresentTrip = (yearArray) => {
+  presentTripContainer.classList.remove('hidden');
+  yearArray.forEach((trip) => {
+    if(trip.date === date) {
+      presentTrip.innerHTML += `  <div class= 'trip-card'>
+          <img class='upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+          <h1 class='trip-name'>${trip.destination.name}</h1>
+          <h2 class='trip-date'>${trip.date}</h2>
+        </div>`;
+    }
+  })
 }
 
 const getUpcomingTrips = () => {
-  let num =1;
   usersTrips.forEach((trip) => {
     if(trip.date > date) {
       console.log(trip.destination.name);
-      upcomingTrips.innerHTML += `  <a href="#" data-micromodal-trigger='modal-${1}'>
+      upcomingTrips.innerHTML += `
       <div class= 'upcoming-trip-card'>
         <img class='upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
         <h2 class='trip-date'>${trip.date}</h2>
-      </div>
-      </a>`;
+      </div>`;
     }
-    num++
-  });
-  createUpcomingModuls();
-  MicroModal.init({
-    onShow: modal => console.info(`${modal.id} is shown`), // [1]
-    onClose: modal => console.info(`${modal.id} is hidden`), // [2]
-    openTrigger: 'data-custom-open', // [3]
-    closeTrigger: 'data-custom-close', // [4]
-    openClass: 'is-open', // [5]
-    disableScroll: true, // [6]
-    disableFocus: false, // [7]
-    awaitOpenAnimation: false, // [8]
-    awaitCloseAnimation: false, // [9]
-    debugMode: true // [10]
   });
 }
 
 const getPastTrips = () => {
   usersTrips.forEach((trip) => {
-    let num = 1;
     if(trip.date < date) {
       pastTrips.innerHTML += `<div class= 'trip-card'>
-        <img data-micromodal-trigger="modal-${num}" class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
         <h2 class='trip-date'>${trip.date}</h2>
       </div>`;
     }
-    num++;
-  })
+  });
 }
 
 const getPendingTrips = () => {
