@@ -2,11 +2,12 @@
 import './css/styles.css';
 import Traveler from './Traveler.js';
 import TravelerRepo from './TravelerRepo.js'
+import dayjs from 'dayjs';
 import Destination from './Destination.js'
 import DestinationRepo from './DestinationRepo.js'
 import TripRepo from './TripRepo.js';
 import Trip from './Trip.js';
-import { getPromise, allData } from './apiCalls';
+import { getPromise, allData, postUserCall } from './apiCalls';
 
 //Query selectors ================================
 let upcomingTrips = document.querySelector('.upcoming-trips-container');
@@ -29,11 +30,11 @@ let newTripButton = document.querySelector('.create-new-trip');
 let destinationOptions = document.getElementById('destination-selection');
 let cost = document.querySelector('.cost');
 let agentFee = document.querySelector('.agent-fee');
+let submitTripForm = document.querySelector('.book-new-trip');
 
 //Global Variables ===============================
 let currentUser = null;
 let usersTrips = null;
-let date = new Date();
 let destinations = null;
 
 
@@ -42,6 +43,7 @@ let destinations = null;
 closeButton.addEventListener("click", toggleModal);
 newTripButton.addEventListener('click', showForm);
 newTripForm.addEventListener('keyup', showEstimate);
+submitTripForm.addEventListener('click', submitForm);
 
 window.addEventListener('load', () => {
   allData.then(data => {
@@ -49,7 +51,6 @@ window.addEventListener('load', () => {
     destinations = data[1].destinations;
     let travelers = data[2].travelers;
     setInitialData(trips, travelers);
-    formatDate();
     setUpInitialDisplay(destinations)
   }).catch(error => console.log(error));
 });
@@ -64,7 +65,7 @@ function showEstimate() {
   let duration = tripDuration.value;
   let travelers = travelerAmount.value;
   let destination = destinationOptions.value;
-  let infoD = destinations.findDestinationByName(destination);
+  let infoD = destinations.findDestination(parseInt(destination));
 let sum = (duration*infoD.lodgingCost*travelers)+(travelers*infoD.flightCost);
   cost.innerText = `Estimated Cost: $${sum}`;
   agentFee.innerText = `Agent Fee: $${sum*.10}`;
@@ -73,18 +74,8 @@ let sum = (duration*infoD.lodgingCost*travelers)+(travelers*infoD.flightCost);
 
 const populateSelections = () => {
   destinations.destinations.forEach((destination) => {
-    destinationOptions.innerHTML += `<option id=${destination.id} value="${destination.name}">${destination.name}</option>`;
+    destinationOptions.innerHTML += `<option id=${destination.id} value="${destination.id}">${destination.name}</option>`;
   });
-}
-
-const formatDate = () => {
-  let today = '';
-  let month = date.getMonth();
-  if(month < 10) {
-    month = `0${month}`;
-  }
-  today += `20${date.getFullYear()}/${month}/${date.getDate()}`;
-  date = today;
 }
 
 const setInitialData = (trips, travelers) => {
@@ -149,7 +140,7 @@ const setUpDestinationsRepo = () => {
 const calculateTravelCostThisYear = () => {
   let sum = 0;
   usersTrips.forEach((trip) => {
-    if(trip.date.includes('2022')) {
+    if(dayjs(trip.date).year() === dayjs().year()) {
       let lodging = ((trip.travelers)*(trip.destination.lodgingCost))*trip.duration;
       let flights = (trip.travelers*trip.destination.flightCost)*2;
       sum += (lodging+flights)+((lodging+flights)*.10);
@@ -158,12 +149,14 @@ const calculateTravelCostThisYear = () => {
   showTotalCost(sum);
 }
 
-//DOM functions ==============================
-Date.prototype.addDays = function(days) {
-    var date = new Date(this.valueOf());
-    date.setDate(date.getDate() + days);
-    return date;
+function submitForm() {
+  event.preventDefault();
+  let tripObj = {id:276, userID:currentUser.id, destinationID:destinationOptions.value, travelers:travelerAmount.value, date:(tripDate.value).split('-').join('/'), duration:tripDuration.value, status:"pending", suggestedActivities:[]};
+  console.log(tripObj)
+  postUserCall(tripObj,'trips').then(response => console.log('WOAH HOWDY'));
 }
+
+//DOM functions ==============================
 
 function toggleModal() {
   formModal.classList.toggle('show-modal')
@@ -177,23 +170,8 @@ const showTotalCost = (sum) => {
 }
 
 const getPresentTrips = () => {
-  let days = [];
-let thisYear = usersTrips.filter((trip) => {
-    let newDate = new Date(trip.date);
-    let today = new Date();
-    if(newDate.getFullYear() === today.getFullYear()){
-      return trip;
-    }
-  });
-  if(thisYear.includes(date)) {
-    displayPresentTrip(thisYear);
-  }
-}
-
-const displayPresentTrip = (yearArray) => {
-  presentTripContainer.classList.remove('hidden');
-  yearArray.forEach((trip) => {
-    if(trip.date === date) {
+  usersTrips.forEach((trip) => {
+    if(dayjs(trip.date) <= dayjs() && dayjs() < dayjs(trip.date).add(trip.duration, 'day')) {
       presentTrip.innerHTML += `  <div class= 'trip-card'>
           <img class='upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
           <h1 class='trip-name'>${trip.destination.name}</h1>
@@ -205,7 +183,7 @@ const displayPresentTrip = (yearArray) => {
 
 const getUpcomingTrips = () => {
   usersTrips.forEach((trip) => {
-    if(trip.date > date) {
+    if(dayjs(trip.date) > dayjs()) {
       console.log(trip.destination.name);
       upcomingTrips.innerHTML += `
       <div class= 'upcoming-trip-card'>
@@ -219,7 +197,7 @@ const getUpcomingTrips = () => {
 
 const getPastTrips = () => {
   usersTrips.forEach((trip) => {
-    if(trip.date < date) {
+    if(dayjs(trip.date) < dayjs()) {
       pastTrips.innerHTML += `<div class= 'trip-card'>
         <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
@@ -231,7 +209,7 @@ const getPastTrips = () => {
 
 const getPendingTrips = () => {
   usersTrips.forEach((trip) => {
-    if(trip.status === 'pending') {
+    if(trip.status === 'pending' && dayjs(trip.date) > dayjs()) {
       pendingTrips.innerHTML += `<div class= 'trip-card'>
         <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
