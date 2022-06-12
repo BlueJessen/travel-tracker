@@ -6,7 +6,7 @@ import Destination from './Destination.js'
 import DestinationRepo from './DestinationRepo.js'
 import TripRepo from './TripRepo.js';
 import Trip from './Trip.js';
-import { getPromise, allData } from './apiCalls';
+import { getPromise, allData, postUserCall } from './apiCalls';
 
 //Query selectors ================================
 let upcomingTrips = document.querySelector('.upcoming-trips-container');
@@ -29,6 +29,7 @@ let newTripButton = document.querySelector('.create-new-trip');
 let destinationOptions = document.getElementById('destination-selection');
 let cost = document.querySelector('.cost');
 let agentFee = document.querySelector('.agent-fee');
+let submitTripForm = document.querySelector('.book-new-trip');
 
 //Global Variables ===============================
 let currentUser = null;
@@ -42,6 +43,7 @@ let destinations = null;
 closeButton.addEventListener("click", toggleModal);
 newTripButton.addEventListener('click', showForm);
 newTripForm.addEventListener('keyup', showEstimate);
+submitTripForm.addEventListener('click', submitForm);
 
 window.addEventListener('load', () => {
   allData.then(data => {
@@ -64,7 +66,7 @@ function showEstimate() {
   let duration = tripDuration.value;
   let travelers = travelerAmount.value;
   let destination = destinationOptions.value;
-  let infoD = destinations.findDestinationByName(destination);
+  let infoD = destinations.findDestination(parseInt(destination));
 let sum = (duration*infoD.lodgingCost*travelers)+(travelers*infoD.flightCost);
   cost.innerText = `Estimated Cost: $${sum}`;
   agentFee.innerText = `Agent Fee: $${sum*.10}`;
@@ -73,7 +75,7 @@ let sum = (duration*infoD.lodgingCost*travelers)+(travelers*infoD.flightCost);
 
 const populateSelections = () => {
   destinations.destinations.forEach((destination) => {
-    destinationOptions.innerHTML += `<option id=${destination.id} value="${destination.name}">${destination.name}</option>`;
+    destinationOptions.innerHTML += `<option id=${destination.id} value="${destination.id}">${destination.name}</option>`;
   });
 }
 
@@ -156,6 +158,13 @@ const calculateTravelCostThisYear = () => {
     }
   })
   showTotalCost(sum);
+}
+
+function submitForm() {
+  event.preventDefault();
+  let tripObj = {id:276, userID:currentUser.id, destinationID:destinationOptions.value, travelers:travelerAmount.value, date:(tripDate.value).split('-').join('/'), duration:tripDuration.value, status:"pending", suggestedActivities:[]};
+  console.log(tripObj)
+  postUserCall(tripObj,'trips').then(response => console.log('WOAH HOWDY'));
 }
 
 //DOM functions ==============================
