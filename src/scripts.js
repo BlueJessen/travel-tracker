@@ -36,6 +36,7 @@ let submitTripForm = document.querySelector('.book-new-trip');
 let currentUser = null;
 let usersTrips = null;
 let destinations = null;
+let trips = null;
 
 
 
@@ -47,7 +48,7 @@ submitTripForm.addEventListener('click', submitForm);
 
 window.addEventListener('load', () => {
   allData().then(data => {
-    let trips = data[0].trips;
+    trips = data[0].trips;
     destinations = data[1].destinations;
     let travelers = data[2].travelers;
     setInitialData(trips, travelers);
@@ -120,7 +121,11 @@ const setUpTravelerRepo = (travelersArray) => {
 }
 
 const setUpTripsRepo = (trips) => {
-  return new TripRepo(trips);
+let tripsRepo = new TripRepo(trips);
+trips = tripsRepo;
+return tripsRepo;
+
+
 }
 
 const findUsersTrips = (userID, trips) => {
@@ -153,7 +158,8 @@ const calculateTravelCostThisYear = () => {
 
 function submitForm() {
   event.preventDefault();
-  let tripObj = {id: destinations.length+1, userID:currentUser.id,
+  console.log(trips);
+  let tripObj = {id: trips.length+1, userID:currentUser.id,
     destinationID: parseInt(destinationOptions.value),
     travelers: travelerAmount.value,
     date:(tripDate.value).split('-').join('/'),
