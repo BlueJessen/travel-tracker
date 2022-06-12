@@ -35,6 +35,76 @@ nav {
   background-color: #c8edfa;
 }
 
+.show-modal {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1.0);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.1);
+}
+
+.cost, .agent-fee {
+  font-size: 2rem;
+}
+
+
+.modal-content {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color:  rgb(179, 227, 245, .8);
+    padding: 1rem 1.5rem;
+    width: 50vw;
+    height: 50vh;
+    border-radius: 0.5rem;
+}
+
+.close-button {
+    margin-top: 150px;
+    margin-left: 80vh;
+    width: 3vh;
+    height: 3vh;
+    line-height: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    background-color: lightgray;
+}
+
+.close-button:hover {
+    background-color: darkgray;
+}
+
+.new-trip {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.show-modal {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1.0);
+    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
 .search-destinations {
   position: fixed;
   height: 6vh;
@@ -92,10 +162,20 @@ nav {
   cursor: pointer;
 }
 
+.present-trip {
+  margin: 10px;
+  width: 35vw;
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(179, 227, 245, .8);
+}
+
 .upcoming-trips-container {
   padding: 10px;
   width: 35vw;
-  height: 50vh;
+  height: 30vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -165,8 +245,9 @@ nav {
 }
 
 .pending-trips-container {
+  margin-top: 40px;
   width: 30vw;
-  height: 30vh;
+  height: 20vh;
 }
 
 .pending-trips {
@@ -174,4 +255,8 @@ nav {
   height: 45vh;
   background-color: rgb(179, 227, 245, .8);
   text-align: center;
+}
+
+.hidden {
+  display: none;
 }

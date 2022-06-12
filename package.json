@@ -282,6 +282,7 @@
     "merge2": "^1.4.1",
     "methods": "^1.1.2",
     "micromatch": "^4.0.4",
+    "micromodal": "^0.4.10",
     "mime": "^1.6.0",
     "mime-db": "^1.48.0",
     "mime-types": "^2.1.31",

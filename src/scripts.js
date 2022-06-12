@@ -1,6 +1,5 @@
 
 import './css/styles.css';
-// import 'images/search-free-icon-font.svg';
 import Traveler from './Traveler.js';
 import TravelerRepo from './TravelerRepo.js'
 import Destination from './Destination.js'
@@ -13,33 +12,79 @@ import { getPromise, allData } from './apiCalls';
 let upcomingTrips = document.querySelector('.upcoming-trips-container');
 let pastTrips = document.querySelector('.past-trips-container');
 let pendingTrips = document.querySelector('.pending-trips-container');
+let presentTrip = document.querySelector('.present-trip-container');
+let presentTripContainer = document.querySelector('.trip-container');
 let totalThisYear = document.querySelector('.total-amount');
 let topNav = document.querySelector('.top-nav');
+let upcomingModuls = document.querySelector('.upcoming-moduls');
+//Form Query selectors
 
+let closeButton = document.querySelector(".close-button");
+let formModal = document.querySelector(".modal");
+let newTripForm = document.querySelector('.new-trip');
+let tripDuration = document.getElementById('duration');
+let travelerAmount = document.getElementById('travelers');
+let tripDate = document.getElementById('date');
 let newTripButton = document.querySelector('.create-new-trip');
+let destinationOptions = document.getElementById('destination-selection');
+let cost = document.querySelector('.cost');
+let agentFee = document.querySelector('.agent-fee');
 
 //Global Variables ===============================
 let currentUser = null;
 let usersTrips = null;
-let date = '2022/05/11';
+let date = new Date();
+let destinations = null;
+
+
 
 //Event Listeners ================================
-
+closeButton.addEventListener("click", toggleModal);
 newTripButton.addEventListener('click', showForm);
+newTripForm.addEventListener('keyup', showEstimate);
 
 window.addEventListener('load', () => {
   allData.then(data => {
     let trips = data[0].trips;
-    let destinations = data[1].destinations;
+    destinations = data[1].destinations;
     let travelers = data[2].travelers;
     setInitialData(trips, travelers);
+    formatDate();
     setUpInitialDisplay(destinations)
   }).catch(error => console.log(error));
 });
 
 //Data Functions =====================================
 function showForm() {
+  populateSelections();
+  toggleModal();
+}
 
+function showEstimate() {
+  let duration = tripDuration.value;
+  let travelers = travelerAmount.value;
+  let destination = destinationOptions.value;
+  let infoD = destinations.findDestinationByName(destination);
+let sum = (duration*infoD.lodgingCost*travelers)+(travelers*infoD.flightCost);
+  cost.innerText = `Estimated Cost: $${sum}`;
+  agentFee.innerText = `Agent Fee: $${sum*.10}`;
+
+}
+
+const populateSelections = () => {
+  destinations.destinations.forEach((destination) => {
+    destinationOptions.innerHTML += `<option id=${destination.id} value="${destination.name}">${destination.name}</option>`;
+  });
+}
+
+const formatDate = () => {
+  let today = '';
+  let month = date.getMonth();
+  if(month < 10) {
+    month = `0${month}`;
+  }
+  today += `20${date.getFullYear()}/${month}/${date.getDate()}`;
+  date = today;
 }
 
 const setInitialData = (trips, travelers) => {
@@ -49,20 +94,21 @@ const setInitialData = (trips, travelers) => {
   console.log(usersTrips);
 }
 
-const setUpInitialDisplay = (destinations) => {
+const setUpInitialDisplay = () => {
   console.log(destinations);
-  let repo = setUpDestinationsRepo(destinations);
-  setTripDestinations(repo);
+  setUpDestinationsRepo();
+  setTripDestinations();
   getUpcomingTrips();
+  getPresentTrips();
   getPastTrips();
   getPendingTrips();
   calculateTravelCostThisYear();
   welcomeUser();
 }
 
-const setTripDestinations = (repo) => {
+const setTripDestinations = () => {
   usersTrips.forEach((trip) => {
-  let tripDestination = repo.findDestination(trip.destination);
+  let tripDestination = destinations.findDestination(trip.destination);
   trip.destination = tripDestination;
 });
 }
@@ -93,11 +139,11 @@ const findUsersTrips = (userID, trips) => {
   usersTrips = newTrips;
 }
 
-const setUpDestinationsRepo = (destinations) => {
+const setUpDestinationsRepo = () => {
   let destinationsArray = destinations.map((destination) => {
     return new Destination(destination);
-  })
-  return new DestinationRepo(destinationsArray);
+  });
+  destinations = new DestinationRepo(destinationsArray);
 }
 
 const calculateTravelCostThisYear = () => {
@@ -113,6 +159,15 @@ const calculateTravelCostThisYear = () => {
 }
 
 //DOM functions ==============================
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
+function toggleModal() {
+  formModal.classList.toggle('show-modal')
+}
 
 const welcomeUser = () => {
   topNav.innerText = `  Welcome ${currentUser.name}!`;
@@ -121,11 +176,39 @@ const showTotalCost = (sum) => {
   totalThisYear.innerText = `$ ${sum}.00`;
 }
 
+const getPresentTrips = () => {
+  let days = [];
+let thisYear = usersTrips.filter((trip) => {
+    let newDate = new Date(trip.date);
+    let today = new Date();
+    if(newDate.getFullYear() === today.getFullYear()){
+      return trip;
+    }
+  });
+  if(thisYear.includes(date)) {
+    displayPresentTrip(thisYear);
+  }
+}
+
+const displayPresentTrip = (yearArray) => {
+  presentTripContainer.classList.remove('hidden');
+  yearArray.forEach((trip) => {
+    if(trip.date === date) {
+      presentTrip.innerHTML += `  <div class= 'trip-card'>
+          <img class='upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+          <h1 class='trip-name'>${trip.destination.name}</h1>
+          <h2 class='trip-date'>${trip.date}</h2>
+        </div>`;
+    }
+  })
+}
+
 const getUpcomingTrips = () => {
   usersTrips.forEach((trip) => {
     if(trip.date > date) {
       console.log(trip.destination.name);
-      upcomingTrips.innerHTML += `<div class= 'upcoming-trip-card'>
+      upcomingTrips.innerHTML += `
+      <div class= 'upcoming-trip-card'>
         <img class='upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
         <h2 class='trip-date'>${trip.date}</h2>
@@ -143,7 +226,7 @@ const getPastTrips = () => {
         <h2 class='trip-date'>${trip.date}</h2>
       </div>`;
     }
-  })
+  });
 }
 
 const getPendingTrips = () => {

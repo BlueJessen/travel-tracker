@@ -14,12 +14,42 @@
     <h1 class='top-nav'></h1>
     <input class='search-destinations' placeholder='Search Locations'></input>
     <button class='search-button'>Search  </button>
-    <button class='create-new-trip'>New Trip</button>
+    <button class='create-new-trip trigger'>New Trip</button>
   </nav>
   <main>
+    <div class='modal'>
+      <span class="close-button">X</span>
+      <div class='modal-content'>
+        <form class='new-trip' action='create-new-trip-form' method='post'>
+          <ul style="list-style: none;">
+            <li>
+              <label for='destination'>Destination:</label>
+              <select name='destination' id='destination-selection'>
+              </select>
+            </li>
+            <li>
+              <label for='date'>Start Date:</label>
+              <input type='date' id='date' name='trip-date'></input>
+            </li>
+            <li>
+              <label for='duration'>Duration:</label>
+              <input type='text' id='duration' name='trip-duration'></input>
+            </li>
+            <li>
+              <label for='duration'>Amount of Travelers:</label>
+              <input type='text' id='travelers' name='traveler-amount'></input>
+            </li>
+          </ul>
+          <button type='submit'>Book Trip</button>
+          <h1 class='cost'> Estimated Cost: </h1>
+          <h1 class='agent-fee'> Agent Fee: </h1>
+        </form>
+      </div>
+    </div>
     <section class='wrapper'>
       <section class= 'left-side-page'>
         <h1>Upcoming Trips</h1>
+        <section class='upcoming-moduls'></section>
         <section class= 'upcoming-trips-container trip-view'>
 
         </section>
@@ -32,10 +62,15 @@
           <h1>Total Amount Spent On Trips This Year</h1>
           <h2 class='total-amount'></h2>
         </section>
+        <div class='hidden present-trip'>
+          <h1>Present Trip</h1>
+          <section class=' present-trip-container'>
+
+          </section>
+        </div>
         <div class='pending-trips'>
           <h1>Pending Trips</h1>
           <section class= 'pending-trips-container trip-view'>
-            <button>List View</button>
           </section>
         </div>
       </section>
