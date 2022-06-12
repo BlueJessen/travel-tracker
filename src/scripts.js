@@ -17,9 +17,12 @@ let presentTripContainer = document.querySelector('.trip-container');
 let totalThisYear = document.querySelector('.total-amount');
 let topNav = document.querySelector('.top-nav');
 let upcomingModuls = document.querySelector('.upcoming-moduls');
+let closeButton = document.querySelector(".close-button");
+let formModal = document.querySelector(".modal");
 
 let newTripButton = document.querySelector('.create-new-trip');
-let destinationOptions = document.getElementByID('destination-selection');
+let destinationOptions = document.getElementById('destination-selection');
+let estimateCostBotton = document.querySelector('.estimate-cost-button');
 //Global Variables ===============================
 let currentUser = null;
 let usersTrips = null;
@@ -29,7 +32,8 @@ let destinations = null;
 
 
 //Event Listeners ================================
-
+estimateCostBotton.addEventListener('click', showEstimate);
+closeButton.addEventListener("click", toggleModal);
 newTripButton.addEventListener('click', showForm);
 
 window.addEventListener('load', () => {
@@ -46,10 +50,12 @@ window.addEventListener('load', () => {
 //Data Functions =====================================
 function showForm() {
   populateSelections();
+  toggleModal();
 }
 
 const populateSelections = () => {
-  destinations.forEach((destination) => {
+  console.log(destinations.destinations)
+  destinations.destinations.forEach((destination) => {
     destinationOptions.innerHTML += `<option id=${destination.id} value="${destination.name}">${destination.name}</option>`;
   });
 }
@@ -71,10 +77,10 @@ const setInitialData = (trips, travelers) => {
   console.log(usersTrips);
 }
 
-const setUpInitialDisplay = (destinations) => {
+const setUpInitialDisplay = () => {
   console.log(destinations);
-  let repo = setUpDestinationsRepo(destinations);
-  setTripDestinations(repo);
+  setUpDestinationsRepo();
+  setTripDestinations();
   getUpcomingTrips();
   getPresentTrips();
   getPastTrips();
@@ -83,9 +89,9 @@ const setUpInitialDisplay = (destinations) => {
   welcomeUser();
 }
 
-const setTripDestinations = (repo) => {
+const setTripDestinations = () => {
   usersTrips.forEach((trip) => {
-  let tripDestination = repo.findDestination(trip.destination);
+  let tripDestination = destinations.findDestination(trip.destination);
   trip.destination = tripDestination;
 });
 }
@@ -116,11 +122,11 @@ const findUsersTrips = (userID, trips) => {
   usersTrips = newTrips;
 }
 
-const setUpDestinationsRepo = (destinations) => {
+const setUpDestinationsRepo = () => {
   let destinationsArray = destinations.map((destination) => {
     return new Destination(destination);
-  })
-  return new DestinationRepo(destinationsArray);
+  });
+  destinations = new DestinationRepo(destinationsArray);
 }
 
 const calculateTravelCostThisYear = () => {
@@ -140,6 +146,10 @@ Date.prototype.addDays = function(days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
+}
+
+function toggleModal() {
+  formModal.classList.toggle('show-modal')
 }
 
 const welcomeUser = () => {
