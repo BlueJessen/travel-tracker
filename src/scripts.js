@@ -35,7 +35,6 @@ let submitTripForm = document.querySelector('.book-new-trip');
 //Global Variables ===============================
 let currentUser = null;
 let usersTrips = null;
-let date = new Date();
 let destinations = null;
 
 
@@ -52,7 +51,6 @@ window.addEventListener('load', () => {
     destinations = data[1].destinations;
     let travelers = data[2].travelers;
     setInitialData(trips, travelers);
-    formatDate();
     setUpInitialDisplay(destinations)
   }).catch(error => console.log(error));
 });
@@ -78,16 +76,6 @@ const populateSelections = () => {
   destinations.destinations.forEach((destination) => {
     destinationOptions.innerHTML += `<option id=${destination.id} value="${destination.id}">${destination.name}</option>`;
   });
-}
-
-const formatDate = () => {
-  let today = '';
-  let month = date.getMonth();
-  if(month < 10) {
-    month = `0${month}`;
-  }
-  today += `20${date.getFullYear()}/${month}/${date.getDate()}`;
-  date = today;
 }
 
 const setInitialData = (trips, travelers) => {
@@ -152,7 +140,7 @@ const setUpDestinationsRepo = () => {
 const calculateTravelCostThisYear = () => {
   let sum = 0;
   usersTrips.forEach((trip) => {
-    if(trip.date.includes('2022')) {
+    if(dayjs(trip.date).year() === dayjs().year()) {
       let lodging = ((trip.travelers)*(trip.destination.lodgingCost))*trip.duration;
       let flights = (trip.travelers*trip.destination.flightCost)*2;
       sum += (lodging+flights)+((lodging+flights)*.10);
@@ -182,23 +170,13 @@ const showTotalCost = (sum) => {
 }
 
 const getPresentTrips = () => {
-  let days = [];
-let thisYear = usersTrips.filter((trip) => {
-    let newDate = new Date(trip.date);
-    let today = new Date();
-    if(newDate.getFullYear() === today.getFullYear()){
-      return trip;
-    }
-  });
-  if(thisYear.includes(date)) {
-    displayPresentTrip(thisYear);
-  }
+
 }
 
 const displayPresentTrip = (yearArray) => {
   presentTripContainer.classList.remove('hidden');
   yearArray.forEach((trip) => {
-    if(trip.date === date) {
+    if(dayjs(trip.date) <= dayjs() && dayjs() < dayjs(trip.date).add(trip.duration, 'day')) {
       presentTrip.innerHTML += `  <div class= 'trip-card'>
           <img class='upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
           <h1 class='trip-name'>${trip.destination.name}</h1>
