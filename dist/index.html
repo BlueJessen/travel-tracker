@@ -14,9 +14,37 @@
     <h1 class='top-nav'></h1>
     <input class='search-destinations' placeholder='Search Locations'></input>
     <button class='search-button'>Search  </button>
-    <button class='create-new-trip'>New Trip</button>
+    <button class='create-new-trip trigger'>New Trip</button>
   </nav>
   <main>
+    <div class='modal'>
+      <div class='modal-content'>
+        <form action='create-new-trip-form' method='post'>
+          <ul>
+            <li>
+              <label for='destination'>Destination:</label>
+              <select name='destination' id='destination-selection'>
+              </select>
+              <input type='text' id='destination' name='destination-drop-down'></input>
+            </li>
+            <li>
+              <label for='date'>Start Date:</label>
+              <input type='date' id='date' name='trip-date'></input>
+            </li>
+            <li>
+              <label for='duration'>Duration:</label>
+              <input type='text' id='duration' name='trip-duration'></input>
+            </li>
+            <li>
+              <label for='duration'>Amount of Travelers:</label>
+              <input type='text' id='travelers' name='traveler-amount'></input>
+            </li>
+          </ul>
+          <button class='estimate-cost-button'>Estimate Cost</button>
+          <button type='submit'>Book Trip</button>
+        </form>
+      </div>
+    </div>
     <section class='wrapper'>
       <section class= 'left-side-page'>
         <h1>Upcoming Trips</h1>

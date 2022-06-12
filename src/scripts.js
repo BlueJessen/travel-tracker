@@ -19,11 +19,12 @@ let topNav = document.querySelector('.top-nav');
 let upcomingModuls = document.querySelector('.upcoming-moduls');
 
 let newTripButton = document.querySelector('.create-new-trip');
-
+let destinationOptions = document.getElementByID('destination-selection');
 //Global Variables ===============================
 let currentUser = null;
 let usersTrips = null;
 let date = new Date();
+let destinations = null;
 
 
 
@@ -34,7 +35,7 @@ newTripButton.addEventListener('click', showForm);
 window.addEventListener('load', () => {
   allData.then(data => {
     let trips = data[0].trips;
-    let destinations = data[1].destinations;
+    destinations = data[1].destinations;
     let travelers = data[2].travelers;
     setInitialData(trips, travelers);
     formatDate();
@@ -44,7 +45,13 @@ window.addEventListener('load', () => {
 
 //Data Functions =====================================
 function showForm() {
+  populateSelections();
+}
 
+const populateSelections = () => {
+  destinations.forEach((destination) => {
+    destinationOptions.innerHTML += `<option id=${destination.id} value="${destination.name}">${destination.name}</option>`;
+  });
 }
 
 const formatDate = () => {
