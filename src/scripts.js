@@ -1,6 +1,7 @@
 
 import './css/styles.css';
 // import 'images/search-free-icon-font.svg';
+import MicroModal from 'micromodal';
 import Traveler from './Traveler.js';
 import TravelerRepo from './TravelerRepo.js'
 import Destination from './Destination.js'
@@ -15,6 +16,7 @@ let pastTrips = document.querySelector('.past-trips-container');
 let pendingTrips = document.querySelector('.pending-trips-container');
 let totalThisYear = document.querySelector('.total-amount');
 let topNav = document.querySelector('.top-nav');
+let upcomingModuls = document.querySelector('.upcoming-moduls');
 
 let newTripButton = document.querySelector('.create-new-trip');
 
@@ -121,28 +123,73 @@ const showTotalCost = (sum) => {
   totalThisYear.innerText = `$ ${sum}.00`;
 }
 
+const createUpcomingModuls = () => {
+  let num = 1;
+  usersTrips.forEach((trip) => {
+    if(trip.date > date) {
+      upcomingModuls.innerHTML +=
+      `<div class="modal" id="modal-${num}" aria-hidden="true">
+  <div tabindex="-1" data-micromodal-close>
+    <div role="dialog" aria-modal="true" aria-labelledby="modal-1-title" >
+      <header>
+        <h2 id="modal-1-title">
+          ${trip.destination.name}
+        </h2>
+        <button aria-label="Close modal" data-micromodal-close></button>
+      </header>
+      <div id="modal-1-content">
+      ${trip.destination}
+      </div>
+    </div>
+  </div>
+</div>`;
+    }
+    num++;
+  })
+
+}
+
 const getUpcomingTrips = () => {
+  let num =1;
   usersTrips.forEach((trip) => {
     if(trip.date > date) {
       console.log(trip.destination.name);
-      upcomingTrips.innerHTML += `<div class= 'upcoming-trip-card'>
+      upcomingTrips.innerHTML += `  <a href="#" data-micromodal-trigger='modal-${1}'>
+      <div class= 'upcoming-trip-card'>
         <img class='upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
         <h2 class='trip-date'>${trip.date}</h2>
-      </div>`;
+      </div>
+      </a>`;
     }
+    num++
+  });
+  createUpcomingModuls();
+  MicroModal.init({
+    onShow: modal => console.info(`${modal.id} is shown`), // [1]
+    onClose: modal => console.info(`${modal.id} is hidden`), // [2]
+    openTrigger: 'data-custom-open', // [3]
+    closeTrigger: 'data-custom-close', // [4]
+    openClass: 'is-open', // [5]
+    disableScroll: true, // [6]
+    disableFocus: false, // [7]
+    awaitOpenAnimation: false, // [8]
+    awaitCloseAnimation: false, // [9]
+    debugMode: true // [10]
   });
 }
 
 const getPastTrips = () => {
   usersTrips.forEach((trip) => {
+    let num = 1;
     if(trip.date < date) {
       pastTrips.innerHTML += `<div class= 'trip-card'>
-        <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <img data-micromodal-trigger="modal-${num}" class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
         <h2 class='trip-date'>${trip.date}</h2>
       </div>`;
     }
+    num++;
   })
 }
 
