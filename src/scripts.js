@@ -17,12 +17,17 @@ let presentTripContainer = document.querySelector('.trip-container');
 let totalThisYear = document.querySelector('.total-amount');
 let topNav = document.querySelector('.top-nav');
 let upcomingModuls = document.querySelector('.upcoming-moduls');
+//Form Query selectors
+
 let closeButton = document.querySelector(".close-button");
 let formModal = document.querySelector(".modal");
-
+let newTripForm = document.querySelector('.new-trip');
+let tripDuration = document.getElementById('duration');
+let travelerAmount = document.getElementById('travelers');
+let tripDate = document.getElementById('date');
 let newTripButton = document.querySelector('.create-new-trip');
 let destinationOptions = document.getElementById('destination-selection');
-let estimateCostBotton = document.querySelector('.estimate-cost-button');
+
 //Global Variables ===============================
 let currentUser = null;
 let usersTrips = null;
@@ -32,9 +37,9 @@ let destinations = null;
 
 
 //Event Listeners ================================
-estimateCostBotton.addEventListener('click', showEstimate);
 closeButton.addEventListener("click", toggleModal);
 newTripButton.addEventListener('click', showForm);
+newTripForm.addEventListener('keyup', showEstimate);
 
 window.addEventListener('load', () => {
   allData.then(data => {
@@ -51,6 +56,14 @@ window.addEventListener('load', () => {
 function showForm() {
   populateSelections();
   toggleModal();
+}
+
+function showEstimate() {
+  let duration = tripDuration.value;
+  let travelers = travelerAmount.value;
+  let destination = destinationOptions.value;
+  let tripDateStart = tripDate.value;
+  console.log(duration, travelers, destination, tripDateStart);
 }
 
 const populateSelections = () => {

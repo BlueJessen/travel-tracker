@@ -20,7 +20,7 @@
     <div class='modal'>
       <div class='modal-content'>
          <span class="close-button">X</span>
-        <form action='create-new-trip-form' method='post'>
+        <form class='new-trip' action='create-new-trip-form' method='post'>
           <ul>
             <li>
               <label for='destination'>Destination:</label>
@@ -40,8 +40,9 @@
               <input type='text' id='travelers' name='traveler-amount'></input>
             </li>
           </ul>
-          <button class='estimate-cost-button'>Estimate Cost</button>
           <button type='submit'>Book Trip</button>
+          <h1> Estimated Cost: </h1>
+          <h1> Agent Fee: </h1>
         </form>
       </div>
     </div>
