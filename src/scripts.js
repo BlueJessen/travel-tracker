@@ -170,7 +170,6 @@ const showTotalCost = (sum) => {
 }
 
 const getPresentTrips = () => {
-  presentTripContainer.classList.remove('hidden');
   usersTrips.forEach((trip) => {
     if(dayjs(trip.date) <= dayjs() && dayjs() < dayjs(trip.date).add(trip.duration, 'day')) {
       presentTrip.innerHTML += `  <div class= 'trip-card'>
