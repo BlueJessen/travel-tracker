@@ -46,7 +46,7 @@ newTripForm.addEventListener('keyup', showEstimate);
 submitTripForm.addEventListener('click', submitForm);
 
 window.addEventListener('load', () => {
-  allData.then(data => {
+  allData().then(data => {
     let trips = data[0].trips;
     destinations = data[1].destinations;
     let travelers = data[2].travelers;
@@ -81,12 +81,13 @@ const populateSelections = () => {
 const setInitialData = (trips, travelers) => {
   setUpTravelerRepo(travelers);
   findUsersTrips(currentUser.id, setUpTripsRepo(trips));
-  console.log(currentUser);
-  console.log(usersTrips);
+}
+
+const resetData = (trips, travelers) => {
+  findUsersTrips(currentUser.id, setUpTripsRepo(trips));
 }
 
 const setUpInitialDisplay = () => {
-  console.log(destinations);
   setUpDestinationsRepo();
   setTripDestinations();
   getUpcomingTrips();
@@ -128,6 +129,7 @@ const findUsersTrips = (userID, trips) => {
     return new Trip(trip);
   });
   usersTrips = newTrips;
+  console.log(usersTrips);
 }
 
 const setUpDestinationsRepo = () => {
@@ -142,7 +144,7 @@ const calculateTravelCostThisYear = () => {
   usersTrips.forEach((trip) => {
     if(dayjs(trip.date).year() === dayjs().year()) {
       let lodging = ((trip.travelers)*(trip.destination.lodgingCost))*trip.duration;
-      let flights = (trip.travelers*trip.destination.flightCost)*2;
+      let flights = (trip.travelers*trip.destination.flightCost);
       sum += (lodging+flights)+((lodging+flights)*.10);
     }
   })
@@ -151,9 +153,25 @@ const calculateTravelCostThisYear = () => {
 
 function submitForm() {
   event.preventDefault();
-  let tripObj = {id:276, userID:currentUser.id, destinationID:destinationOptions.value, travelers:travelerAmount.value, date:(tripDate.value).split('-').join('/'), duration:tripDuration.value, status:"pending", suggestedActivities:[]};
-  console.log(tripObj)
-  postUserCall(tripObj,'trips').then(response => console.log('WOAH HOWDY'));
+  let tripObj = {id: destinations.length+1, userID:currentUser.id,
+    destinationID: parseInt(destinationOptions.value),
+    travelers: travelerAmount.value,
+    date:(tripDate.value).split('-').join('/'),
+    duration:parseInt(tripDuration.value),
+    status:"pending",
+    suggestedActivities:[]};
+    console.log(tripObj);
+  postUserCall(tripObj,'trips').then(response => reloadData());
+}
+
+function reloadData() {
+  allData().then(data => {
+    let trips = data[0].trips;
+    destinations = data[1].destinations;
+    let travelers = data[2].travelers;
+    resetData(trips, travelers);
+    setUpInitialDisplay(destinations)
+  }).catch(error => console.log(error));
 }
 
 //DOM functions ==============================
@@ -183,7 +201,7 @@ const getPresentTrips = () => {
 
 const getUpcomingTrips = () => {
   usersTrips.forEach((trip) => {
-    if(dayjs(trip.date) > dayjs()) {
+    if(dayjs(trip.date) > dayjs() && trip.status !== 'pending') {
       console.log(trip.destination.name);
       upcomingTrips.innerHTML += `
       <div class= 'upcoming-trip-card'>

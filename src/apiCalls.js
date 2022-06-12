@@ -3,7 +3,9 @@ const getPromise = (dataType) => {
 }
 
   //populate all databases
-let allData = Promise.all([getPromise('trips'), getPromise('destinations'), getPromise('travelers')]);
+const allData = () => {
+  return Promise.all([getPromise('trips'), getPromise('destinations'), getPromise('travelers')]);
+}
 
 const postUserCall = (postObject, dataType) => {
   return fetch(`http://localhost:3001/api/v1/${dataType}`, {
@@ -16,7 +18,6 @@ const postUserCall = (postObject, dataType) => {
   .then(response => checkForError(response))
   .then(response => {
   response.json()
-  allData = Promise.all([getPromise('trips'), getPromise('destinations'), getPromise('travelers')]);
 })
   .catch(error => error)
 };
