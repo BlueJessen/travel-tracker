@@ -27,6 +27,8 @@ let travelerAmount = document.getElementById('travelers');
 let tripDate = document.getElementById('date');
 let newTripButton = document.querySelector('.create-new-trip');
 let destinationOptions = document.getElementById('destination-selection');
+let cost = document.querySelector('.cost');
+let agentFee = document.querySelector('.agent-fee');
 
 //Global Variables ===============================
 let currentUser = null;
@@ -62,12 +64,14 @@ function showEstimate() {
   let duration = tripDuration.value;
   let travelers = travelerAmount.value;
   let destination = destinationOptions.value;
-  let tripDateStart = tripDate.value;
-  console.log(duration, travelers, destination, tripDateStart);
+  let infoD = destinations.findDestinationByName(destination);
+let sum = (duration*infoD.lodgingCost*travelers)+(travelers*infoD.flightCost);
+  cost.innerText = `Estimated Cost: $${sum}`;
+  agentFee.innerText = `Agent Fee: $${sum*.10}`;
+
 }
 
 const populateSelections = () => {
-  console.log(destinations.destinations)
   destinations.destinations.forEach((destination) => {
     destinationOptions.innerHTML += `<option id=${destination.id} value="${destination.name}">${destination.name}</option>`;
   });

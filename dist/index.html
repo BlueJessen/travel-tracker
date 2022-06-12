@@ -18,10 +18,10 @@
   </nav>
   <main>
     <div class='modal'>
+      <span class="close-button">X</span>
       <div class='modal-content'>
-         <span class="close-button">X</span>
         <form class='new-trip' action='create-new-trip-form' method='post'>
-          <ul>
+          <ul style="list-style: none;">
             <li>
               <label for='destination'>Destination:</label>
               <select name='destination' id='destination-selection'>
@@ -41,8 +41,8 @@
             </li>
           </ul>
           <button type='submit'>Book Trip</button>
-          <h1> Estimated Cost: </h1>
-          <h1> Agent Fee: </h1>
+          <h1 class='cost'> Estimated Cost: </h1>
+          <h1 class='agent-fee'> Agent Fee: </h1>
         </form>
       </div>
     </div>
