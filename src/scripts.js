@@ -169,9 +169,9 @@ const showTotalCost = (sum) => {
   totalThisYear.innerText = `$ ${sum}.00`;
 }
 
-const displayPresentTrip = (yearArray) => {
+const getPresentTrips = () => {
   presentTripContainer.classList.remove('hidden');
-  yearArray.forEach((trip) => {
+  usersTrips.forEach((trip) => {
     if(dayjs(trip.date) <= dayjs() && dayjs() < dayjs(trip.date).add(trip.duration, 'day')) {
       presentTrip.innerHTML += `  <div class= 'trip-card'>
           <img class='upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
