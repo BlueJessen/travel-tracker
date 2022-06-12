@@ -2,6 +2,7 @@
 import './css/styles.css';
 import Traveler from './Traveler.js';
 import TravelerRepo from './TravelerRepo.js'
+import dayjs from 'dayjs';
 import Destination from './Destination.js'
 import DestinationRepo from './DestinationRepo.js'
 import TripRepo from './TripRepo.js';
@@ -168,11 +169,6 @@ function submitForm() {
 }
 
 //DOM functions ==============================
-Date.prototype.addDays = function(days) {
-    var date = new Date(this.valueOf());
-    date.setDate(date.getDate() + days);
-    return date;
-}
 
 function toggleModal() {
   formModal.classList.toggle('show-modal')
@@ -214,7 +210,7 @@ const displayPresentTrip = (yearArray) => {
 
 const getUpcomingTrips = () => {
   usersTrips.forEach((trip) => {
-    if(trip.date > date) {
+    if(dayjs(trip.date) > dayjs()) {
       console.log(trip.destination.name);
       upcomingTrips.innerHTML += `
       <div class= 'upcoming-trip-card'>
@@ -228,7 +224,7 @@ const getUpcomingTrips = () => {
 
 const getPastTrips = () => {
   usersTrips.forEach((trip) => {
-    if(trip.date < date) {
+    if(dayjs(trip.date) < dayjs()) {
       pastTrips.innerHTML += `<div class= 'trip-card'>
         <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
@@ -240,7 +236,7 @@ const getPastTrips = () => {
 
 const getPendingTrips = () => {
   usersTrips.forEach((trip) => {
-    if(trip.status === 'pending') {
+    if(trip.status === 'pending' && dayjs(trip.date) > dayjs()) {
       pendingTrips.innerHTML += `<div class= 'trip-card'>
         <img class='trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 class='trip-name'>${trip.destination.name}</h1>
