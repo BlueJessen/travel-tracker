@@ -169,10 +169,6 @@ const showTotalCost = (sum) => {
   totalThisYear.innerText = `$ ${sum}.00`;
 }
 
-const getPresentTrips = () => {
-
-}
-
 const displayPresentTrip = (yearArray) => {
   presentTripContainer.classList.remove('hidden');
   yearArray.forEach((trip) => {
