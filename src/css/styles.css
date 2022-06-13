@@ -72,12 +72,17 @@ nav {
     background-color:  rgb(179, 227, 245, .8);
     padding: 1rem 1.5rem;
     width: 50vw;
-    height: 50vh;
+    height: 60vh;
     border-radius: 0.5rem;
 }
 
-.close-button {
-    margin-top: 150px;
+.large-destination-image {
+  width: 30vw;
+  height: 30vh;
+}
+
+.close-button, .close-destination-button {
+    margin-top: 7vw;
     margin-left: 80vh;
     width: 3vh;
     height: 3vh;
@@ -88,9 +93,10 @@ nav {
     background-color: lightgray;
 }
 
-.close-button:hover {
+.close-button:hover, .close-desstination-button:hover {
     background-color: darkgray;
 }
+
 
 .new-trip {
   display: flex;
@@ -110,6 +116,11 @@ nav {
   height: 6vh;
   margin-left: 70vw;
   border: 0;
+}
+
+.destination-details {
+  font-size: 1rem;
+  margin: 0;
 }
 
 .search-button {

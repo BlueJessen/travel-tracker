@@ -17,7 +17,12 @@
     <button class='create-new-trip trigger'>New Trip</button>
   </nav>
   <main>
-    <div class='modal'>
+    <section class='big-card'>
+      <div class='modal destination-modal'>
+        <span class="close-destination-button">X</span>
+      </div>
+    </section>
+    <div class='modal form-modal'>
       <span class="close-button">X</span>
       <div class='modal-content'>
         <form class='new-trip' action='create-new-trip-form' method='post'>
@@ -49,7 +54,6 @@
     <section class='wrapper'>
       <section class= 'left-side-page'>
         <h1>Upcoming Trips</h1>
-        <section class='upcoming-moduls'></section>
         <section class= 'upcoming-trips-container trip-view'>
 
         </section>
@@ -64,7 +68,7 @@
         </section>
         <div class='hidden present-trip'>
           <h1>Present Trip</h1>
-          <section class=' present-trip-container'>
+          <section class=' present-trip-container trip-view'>
 
           </section>
         </div>
