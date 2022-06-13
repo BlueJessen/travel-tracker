@@ -50,6 +50,7 @@ newTripForm.addEventListener('keyup', showEstimate);
 submitTripForm.addEventListener('click', submitForm);
 submitTripForm.addEventListener('keyPress', submitForm);
 allMain.addEventListener('click', getEvent);
+allMain.addEventListener('keyup', getKey);
 closeDestinationModal.addEventListener('click', getEvent);
 
 window.addEventListener('load', () => {
@@ -63,8 +64,12 @@ window.addEventListener('load', () => {
 });
 
 //Data Functions =====================================
-
-function getEvent() {
+function getKey() {
+  if(event.code === 'Enter') {
+    getEvent(event)
+  }
+}
+function getEvent(event) {
   if(event.target.classList.contains('trip')) {
     showDestinationModal(event.target);
   }else if(event.target.classList.contains('close-destination-button')) {
@@ -208,6 +213,10 @@ const showTotalCost = (sum) => {
 }
 
 const showDestinationModal = (destination) => {
+  let allTrips = new TripRepo(usersTrips);
+  let tripID = parseInt(destination.name);
+  let thisTrip = allTrips.findTrip(parseInt(destination.name));
+
 let cardInfo = destinations.findDestination(parseInt(destination.id));
   destinationModal.innerHTML = `
     <span class="close-destination-button">X</span>
@@ -215,9 +224,9 @@ let cardInfo = destinations.findDestination(parseInt(destination.id));
       <div>
         <img class='large-destination-image' src=${cardInfo.imageUrl} alt=${cardInfo.altText} ></img>
         <h1 class='destination-name'>${cardInfo.name}</h1>
+        <h1 class='destination-details'> Your ${thisTrip.date} trip with ${thisTrip.travelers} was ${thisTrip.duration} days!</h1>
         <p class='destination-details'>Flight Cost Estimate Per Person: $${cardInfo.flightCost}</p>
         <p class= 'destination-details'>Lodging Cost Per Day: $${cardInfo.lodgingCost}</p>
-        <button class='book-trip-with-location-button'>Book A Flight</button>
       </div>
     </div>`;
  toggleDestinationModal();
@@ -232,7 +241,7 @@ const getPresentTrips = () => {
   usersTrips.forEach((trip) => {
     if(dayjs(trip.date) <= dayjs() && dayjs() < dayjs(trip.date).add(trip.duration, 'day')) {
       presentTripContainer.classList.remove('hidden');
-      presentTrip.innerHTML += `  <div class= 'trip trip-card' id=${trip.destination.id}>
+      presentTrip.innerHTML += `  <div tabindex='0' class= 'trip trip-card' name=${trip.id} id=${trip.destination.id}>
           <img class='trip upcoming-trip-card-img' id=${trip.destination.id} src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
           <h1 id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
           <h2 id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
@@ -245,10 +254,10 @@ const getUpcomingTrips = () => {
   usersTrips.forEach((trip) => {
     if(dayjs(trip.date) > dayjs() && trip.status !== 'pending') {
       upcomingTrips.innerHTML += `
-      <div class= 'trip upcoming-trip-card'id=${trip.destination.id}>
-        <img id=${trip.destination.id} class='trip upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-        <h1 id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
-        <h2 id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
+      <div name=${trip.id} tabindex='0' class= 'trip upcoming-trip-card'id=${trip.destination.id}>
+        <img name=${trip.id} id=${trip.destination.id} class='trip upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
+        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
       </div>`;
     }
   });
@@ -257,10 +266,10 @@ const getUpcomingTrips = () => {
 const getPastTrips = () => {
   usersTrips.forEach((trip) => {
     if(dayjs(trip.date) < dayjs()) {
-      pastTrips.innerHTML += `<div id=${trip.destination.id} class= 'trip trip-card'>
-        <img id=${trip.destination.id} class='trip trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-        <h1 id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
-        <h2 id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
+      pastTrips.innerHTML += `<div name=${trip.id} tabindex='0'id=${trip.destination.id} class= 'trip trip-card'>
+        <img name=${trip.id} id=${trip.destination.id} class='trip trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
+        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
       </div>`;
     }
   });
@@ -269,10 +278,10 @@ const getPastTrips = () => {
 const getPendingTrips = () => {
   usersTrips.forEach((trip) => {
     if(trip.status === 'pending' && dayjs(trip.date) > dayjs()) {
-      pendingTrips.innerHTML += `<div id=${trip.destination.id} class= 'trip trip-card'>
-        <img id=${trip.destination.id} class='trip trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-        <h1 id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
-        <h2 id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
+      pendingTrips.innerHTML += `<div name=${trip.id}  tabindex='0' id=${trip.destination.id} class= 'trip trip-card'>
+        <img name=${trip.id} id=${trip.destination.id} class='trip trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
+        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
       </div>`;
     }
   })
