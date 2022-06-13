@@ -19,6 +19,7 @@ let totalThisYear = document.querySelector('.total-amount');
 let topNav = document.querySelector('.top-nav');
 let upcomingModuls = document.querySelector('.upcoming-moduls');
 let allMain = document.querySelector('main');
+let allBody = document.querySelector('body');
 let destinationModal = document.querySelector('.destination-modal');
 let closeDestinationModal = document.querySelector('.close-destination-button');
 //Form Query selectors
@@ -50,7 +51,7 @@ newTripForm.addEventListener('keyup', showEstimate);
 submitTripForm.addEventListener('click', submitForm);
 submitTripForm.addEventListener('keyPress', submitForm);
 allMain.addEventListener('click', getEvent);
-allMain.addEventListener('keyup', getKey);
+allBody.addEventListener('keyup', getKey);
 closeDestinationModal.addEventListener('click', getEvent);
 
 window.addEventListener('load', () => {
@@ -64,40 +65,6 @@ window.addEventListener('load', () => {
 });
 
 //Data Functions =====================================
-function getKey() {
-  if(event.code === 'Enter') {
-    getEvent(event)
-  }
-}
-function getEvent(event) {
-  if(event.target.classList.contains('trip')) {
-    showDestinationModal(event.target);
-  }else if(event.target.classList.contains('close-destination-button')) {
-    toggleDestinationModal();
-  }
-}
-
-function showForm() {
-  populateSelections();
-  toggleModal();
-}
-
-function showEstimate() {
-  let duration = tripDuration.value;
-  let travelers = travelerAmount.value;
-  let destination = destinationOptions.value;
-  let infoD = destinations.findDestination(parseInt(destination));
-let sum = (duration*infoD.lodgingCost*travelers)+(travelers*infoD.flightCost);
-  cost.innerText = `Estimated Cost: $${sum}`;
-  agentFee.innerText = `Agent Fee: $${sum*.10}`;
-
-}
-
-const populateSelections = () => {
-  destinations.destinations.forEach((destination) => {
-    destinationOptions.innerHTML += `<option id=${destination.id} value="${destination.id}">${destination.name}</option>`;
-  });
-}
 
 const setInitialData = (trips, travelers) => {
   setUpTravelerRepo(travelers);
@@ -120,8 +87,8 @@ const setUpInitialDisplay = () => {
 }
 
 const setTripDestinations = () => {
-  usersTrips.forEach((trip) => {
-  let tripDestination = destinations.findDestination(trip.destinationID);
+  usersTrips.trips.forEach((trip) => {
+  let tripDestination = destinations.findDestination(trip.destination);
   trip.destination = tripDestination;
 });
 }
@@ -152,7 +119,8 @@ const findUsersTrips = (userID, trips) => {
   usersTrips.forEach((trip) => {
     let newTrip = new Trip(trip);
     newTrips.push(newTrip);
-  });
+  })
+  usersTrips = new TripRepo(newTrips);
 }
 
 const setUpDestinationsRepo = () => {
@@ -164,7 +132,7 @@ const setUpDestinationsRepo = () => {
 
 const calculateTravelCostThisYear = () => {
   let sum = 0;
-  usersTrips.forEach((trip) => {
+  usersTrips.trips.forEach((trip) => {
     if(dayjs(trip.date).year() === dayjs().year()) {
       let lodging = ((trip.travelers)*(trip.destination.lodgingCost))*trip.duration;
       let flights = (trip.travelers*trip.destination.flightCost);
@@ -201,6 +169,42 @@ function reloadData() {
 
 //DOM functions ==============================
 
+function getKey() {
+  if(event.code === 'Enter') {
+    getEvent(event)
+  }
+}
+function getEvent(event) {
+  console.log(event.target);
+  if(event.target.classList.contains('trip')) {
+    showDestinationModal(event.target);
+  }else if(event.target.classList.contains('close-destination-button')) {
+    toggleDestinationModal();
+  }
+}
+
+function showForm() {
+  populateSelections();
+  toggleModal();
+}
+
+function showEstimate() {
+  let duration = tripDuration.value;
+  let travelers = travelerAmount.value;
+  let destination = destinationOptions.value;
+  let infoD = destinations.findDestination(parseInt(destination));
+  let sum = (duration*infoD.lodgingCost*travelers)+(travelers*infoD.flightCost);
+  cost.innerText = `Estimated Cost: $${sum}`;
+  agentFee.innerText = `Agent Fee: $${sum*.10}`;
+
+}
+
+const populateSelections = () => {
+  destinations.destinations.forEach((destination) => {
+    destinationOptions.innerHTML += `<option id=${destination.id} value="${destination.id}">${destination.name}</option>`;
+  });
+}
+
 function toggleModal() {
   formModal.classList.toggle('show-modal')
 }
@@ -213,10 +217,9 @@ const showTotalCost = (sum) => {
 }
 
 const showDestinationModal = (destination) => {
-  let allTrips = new TripRepo(usersTrips);
   let tripID = parseInt(destination.name);
-  let thisTrip = allTrips.findTrip(parseInt(destination.name));
-
+  console.log(tripID);
+  let thisTrip = usersTrips.findTrip(tripID);
 let cardInfo = destinations.findDestination(parseInt(destination.id));
   destinationModal.innerHTML = `
     <span class="close-destination-button">X</span>
@@ -238,10 +241,10 @@ function toggleDestinationModal () {
 }
 
 const getPresentTrips = () => {
-  usersTrips.forEach((trip) => {
+  usersTrips.trips.forEach((trip) => {
     if(dayjs(trip.date) <= dayjs() && dayjs() < dayjs(trip.date).add(trip.duration, 'day')) {
       presentTripContainer.classList.remove('hidden');
-      presentTrip.innerHTML += `  <div tabindex='0' class= 'trip trip-card' name=${trip.id} id=${trip.destination.id}>
+      presentTrip.innerHTML += `  <div tabindex='0' class='trip trip-card' name=${trip.id} id=${trip.destination.id}>
           <img class='trip upcoming-trip-card-img' id=${trip.destination.id} src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
           <h1 id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
           <h2 id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
@@ -251,37 +254,37 @@ const getPresentTrips = () => {
 }
 
 const getUpcomingTrips = () => {
-  usersTrips.forEach((trip) => {
+  usersTrips.trips.forEach((trip) => {
     if(dayjs(trip.date) > dayjs() && trip.status !== 'pending') {
       upcomingTrips.innerHTML += `
       <div name=${trip.id} tabindex='0' class= 'trip upcoming-trip-card'id=${trip.destination.id}>
         <img name=${trip.id} id=${trip.destination.id} class='trip upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
-        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
+        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-card-name'>${trip.destination.name}</h1>
+        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-card-date'>${trip.date}</h2>
       </div>`;
     }
   });
 }
 
 const getPastTrips = () => {
-  usersTrips.forEach((trip) => {
+  usersTrips.trips.forEach((trip) => {
     if(dayjs(trip.date) < dayjs()) {
       pastTrips.innerHTML += `<div name=${trip.id} tabindex='0'id=${trip.destination.id} class= 'trip trip-card'>
-        <img name=${trip.id} id=${trip.destination.id} class='trip trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
-        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
+        <img name=${trip.id} id=${trip.destination.id} class='trip trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.altText}></img>
+        <h1 value=${trip.id} id=${trip.destination.id} class='trip trip-card-name'>${trip.destination.name}</h1>
+        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-card-date'>${trip.date}</h2>
       </div>`;
     }
   });
 }
 
 const getPendingTrips = () => {
-  usersTrips.forEach((trip) => {
+  usersTrips.trips.forEach((trip) => {
     if(trip.status === 'pending' && dayjs(trip.date) > dayjs()) {
       pendingTrips.innerHTML += `<div name=${trip.id}  tabindex='0' id=${trip.destination.id} class= 'trip trip-card'>
         <img name=${trip.id} id=${trip.destination.id} class='trip trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
-        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
+        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-card-name'>${trip.destination.name}</h1>
+        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-card-date'>${trip.date}</h2>
       </div>`;
     }
   })
