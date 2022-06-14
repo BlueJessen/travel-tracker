@@ -51,18 +51,6 @@ let trips = null;
 
 
 
-//Event Listeners ================================
-closeButton.addEventListener("click", toggleModal);
-newTripButton.addEventListener('click', showForm);
-newTripForm.addEventListener('keyup', showEstimate);
-submitTripForm.addEventListener('click', submitForm);
-submitTripForm.addEventListener('keyPress', submitForm);
-allMain.addEventListener('click', getEvent);
-allBody.addEventListener('keyup', getKey);
-closeDestinationModal.addEventListener('click', getEvent);
-loginButton.addEventListener('click', attemptLogin)
-
-window.addEventListener('load', toggleLoginModal)
 
 //Data Functions =====================================
 const fetchLoginData = (userID) => {
@@ -84,7 +72,7 @@ const fetchLoginData = (userID) => {
   }).catch(error => console.log(error));
 }
 
-function attemptLogin() {
+const attemptLogin = () => {
   if(password.value === 'travel') {
     let userID = parseInt(username.value.split('traveler')[1]);
     fetchLoginData(userID)
@@ -93,7 +81,7 @@ function attemptLogin() {
   }
 }
 
-function failedToFetch() {
+const failedToFetch = () => {
   username.value = '';
   password.value = '';
   errorMessage.innerText = `invalid username please try again`;
@@ -105,7 +93,7 @@ const alertOfIncorrectPassword = () => {
   errorMessage.innerText = `username or password is incorrect`;
 }
 
-function toggleLoginModal() {
+const toggleLoginModal = () => {
   loginModal.classList.toggle('show-modal');
 }
 
@@ -184,7 +172,7 @@ const calculateTravelCostThisYear = () => {
   showTotalCost(sum);
 }
 
-function submitForm() {
+const submitForm = () => {
   event.preventDefault();
   console.log(trips);
   let tripObj = {id: trips.length+1, userID:currentUser.id,
@@ -199,7 +187,7 @@ function submitForm() {
   toggleModal();
 }
 
-function reloadData() {
+const reloadData = () => {
   allData().then(data => {
     let trips = data[0].trips;
     destinations = data[1].destinations;
@@ -211,7 +199,7 @@ function reloadData() {
 
 //DOM functions ==============================
 
-function getKey() {
+const getKey = () => {
   if(event.code === 'Enter') {
     getEvent(event)
   }
@@ -225,12 +213,12 @@ function getEvent(event) {
   }
 }
 
-function showForm() {
+const showForm = () => {
   populateSelections();
   toggleModal();
 }
 
-function showEstimate() {
+const showEstimate = () => {
   let duration = tripDuration.value;
   let travelers = travelerAmount.value;
   let destination = destinationOptions.value;
@@ -247,7 +235,7 @@ const populateSelections = () => {
   });
 }
 
-function toggleModal() {
+const toggleModal = () => {
   formModal.classList.toggle('show-modal')
 }
 
@@ -277,7 +265,7 @@ let cardInfo = destinations.findDestination(parseInt(destination.id));
  toggleDestinationModal();
 }
 
-function toggleDestinationModal () {
+const toggleDestinationModal = ()  => {
   destinationModal.classList.toggle('show-modal');
 }
 
@@ -330,3 +318,16 @@ const getPendingTrips = () => {
     }
   })
 }
+
+//Event Listeners ================================
+closeButton.addEventListener("click", toggleModal);
+newTripButton.addEventListener('click', showForm);
+newTripForm.addEventListener('keyup', showEstimate);
+submitTripForm.addEventListener('click', submitForm);
+submitTripForm.addEventListener('keyPress', submitForm);
+allMain.addEventListener('click', getEvent);
+allBody.addEventListener('keyup', getKey);
+closeDestinationModal.addEventListener('click', getEvent);
+loginButton.addEventListener('click', attemptLogin)
+
+window.addEventListener('load', toggleLoginModal)
