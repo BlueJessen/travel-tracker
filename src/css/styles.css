@@ -237,18 +237,18 @@ nav {
   margin-left: 7vw;
 }
 
-.trip-card-img {
+.card-img {
   width: 10vw;
   height: 10vh;
 }
 
-.trip-card-name {
+.card-name {
   text-align: center;
   margin: 0;
   border: 0;
 }
 
-.trip-card-date {
+.card-date {
   font-size: .8rem;
   margin: 0;
   border: 0;
