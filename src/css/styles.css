@@ -196,6 +196,7 @@ nav {
 .error-message {
   color: red;
   margin: 0;
+  font-size: 1.2rem;
 }
 .upcoming-trip-card {
   width: 24vw;
@@ -211,6 +212,13 @@ nav {
   height: 26vh;
 }
 
+.login-form-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .trip-card {
   width: 10vw;
   height: 18vh;
@@ -219,6 +227,14 @@ nav {
   font-size: .9rem;
   border-radius: 5px;
   background-color: rgb(85, 126, 138, .8);
+}
+
+.login-button {
+  width: 8rem;
+  height: 4rem;
+  background-color: rgb(85, 126, 138, .8);
+  border: none;
+  margin-left: 7vw;
 }
 
 .trip-card-img {
