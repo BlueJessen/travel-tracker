@@ -84,7 +84,7 @@ const attemptLogin = () => {
 const failedToFetch = () => {
   username.value = '';
   password.value = '';
-  errorMessage.innerText = `invalid username please try again`;
+  errorMessage.innerText = `Server error please try again or user different username`;
   toggleLoginModal()
 }
 
