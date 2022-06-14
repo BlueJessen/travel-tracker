@@ -7,9 +7,6 @@ class DestinationRepo {
     return this.destinations.find(destination => destination.id === id);
   }
 
-  findDestinationByName(name) {
-    return this.destinations.find(destination => destination.name === name);
-  }
 }
 
 export default DestinationRepo
