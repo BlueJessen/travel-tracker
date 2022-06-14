@@ -271,8 +271,8 @@ const getPresentTrips = () => {
       presentTripContainer.classList.remove('hidden');
       presentTrip.innerHTML += `  <div tabindex='0' class='present trip trip-card' id=${trip.destination.id},${trip.id}>
           <img class='trip upcoming-trip-card-img' name=${trip.id}  id=${trip.destination.id} src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-          <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
-          <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
+          <h1 name=${trip.id} id=${trip.destination.id} class='trip card-name'>${trip.destination.name}</h1>
+          <h2 name=${trip.id} id=${trip.destination.id} class='trip card-date'>${trip.date}</h2>
         </div>`;
     }
   })
@@ -284,8 +284,8 @@ const getUpcomingTrips = () => {
       upcomingTrips.innerHTML += `
       <div name=${trip.id} tabindex='0' class= 'upcoming trip trip-card upcoming-trip-card'id=${trip.destination.id},${trip.id}>
         <img name=${trip.id} id=${trip.destination.id} class='trip upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-card-name'>${trip.destination.name}</h1>
-        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-card-date'>${trip.date}</h2>
+        <h1 name=${trip.id} id=${trip.destination.id} class='trip card-name'>${trip.destination.name}</h1>
+        <h2 name=${trip.id} id=${trip.destination.id} class='trip card-date'>${trip.date}</h2>
       </div>`;
     }
   });
@@ -307,9 +307,9 @@ const getPendingTrips = () => {
   usersTrips.trips.forEach((trip) => {
     if(trip.status === 'pending' && dayjs(trip.date) > dayjs()) {
       pendingTrips.innerHTML += `<div name=${trip.id}  tabindex='0'id=${trip.destination.id},${trip.id} class= 'pending trip trip-card'>
-        <img name=${trip.id} id=${trip.destination.id} class='trip trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-card-name'>${trip.destination.name}</h1>
-        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-card-date'>${trip.date}</h2>
+        <img name=${trip.id} id=${trip.destination.id} class='trip card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <h1 name=${trip.id} id=${trip.destination.id} class='trip card-name'>${trip.destination.name}</h1>
+        <h2 name=${trip.id} id=${trip.destination.id} class='trip card-date'>${trip.date}</h2>
       </div>`;
     }
   })
