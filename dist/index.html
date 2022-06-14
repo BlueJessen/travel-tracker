@@ -17,6 +17,24 @@
     <button class='create-new-trip trigger'>New Trip</button>
   </nav>
   <main>
+    <section class='modal login-modal'>
+      <div class='modal-content login-form-modal'>
+        <h1 class='error-message'></h1>
+        <form class='login-form' action='user-login' method='fetch'>
+          <ul style='list-style: none;'>
+            <li>
+              <label for='user-name'>Username:</label>
+              <input type='text' id='username' name='username-input' required></input>
+            </li>
+            <li>
+              <label for='password'>Password:</label>
+              <input type='password' id='password' name='user-password' required></input>
+            </li>
+          </ul>
+            <button class='login-button' type='submit'>Login</button>
+        </form>
+      </div>
+    </section>
     <section class='big-card'>
       <div class='modal destination-modal'>
         <span class="close-destination-button">X</span>

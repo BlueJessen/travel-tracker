@@ -36,6 +36,13 @@ let cost = document.querySelector('.cost');
 let agentFee = document.querySelector('.agent-fee');
 let submitTripForm = document.querySelector('.book-new-trip');
 
+//login selectors
+let username = document.getElementById('username');
+let password = document.getElementById('password');
+let loginButton = document.querySelector('.login-button');
+let loginModal = document.querySelector('.login-modal');
+let errorMessage = document.querySelector('.error-message');
+
 //Global Variables ===============================
 let currentUser = null;
 let usersTrips = null;
@@ -53,8 +60,21 @@ submitTripForm.addEventListener('keyPress', submitForm);
 allMain.addEventListener('click', getEvent);
 allBody.addEventListener('keyup', getKey);
 closeDestinationModal.addEventListener('click', getEvent);
+loginButton.addEventListener('click', attemptLogin)
 
-window.addEventListener('load', () => {
+window.addEventListener('load', toggleLoginModal)
+
+//Data Functions =====================================
+const fetchLoginData = (userID) => {
+    event.preventDefault();
+    toggleLoginModal();
+  let user = getPromise(`travelers/${userID}`);
+  user.then(data => {
+    if (data.message === `No traveler found with an id of ${userID}`) {
+      return failedToFetch()
+    }
+    currentUser = data;
+  }).catch(error => failedToFetch())
   allData().then(data => {
     trips = data[0].trips;
     destinations = data[1].destinations;
@@ -62,9 +82,32 @@ window.addEventListener('load', () => {
     setInitialData(trips, travelers);
     setUpInitialDisplay(destinations)
   }).catch(error => console.log(error));
-});
+}
 
-//Data Functions =====================================
+function attemptLogin() {
+  if(password.value === 'travel') {
+    let userID = parseInt(username.value.split('traveler')[1]);
+    fetchLoginData(userID)
+  } else {
+    alertOfIncorrectPassword();
+  }
+}
+
+function failedToFetch() {
+  username.value = '';
+  password.value = '';
+  errorMessage.innerText = `invalid username please try again`;
+  toggleLoginModal()
+}
+
+const alertOfIncorrectPassword = () => {
+  password.value = '';
+  errorMessage.innerText = `username or password is incorrect`;
+}
+
+function toggleLoginModal() {
+  loginModal.classList.toggle('show-modal');
+}
 
 const setInitialData = (trips, travelers) => {
   setUpTravelerRepo(travelers);
@@ -103,7 +146,6 @@ const setUpTravelerRepo = (travelersArray) => {
     return new Traveler(traveler);
   })
   let travelerRepo = new TravelerRepo(travelers);
-  getRandomUser(travelerRepo);
   return travelerRepo;
 }
 
@@ -236,8 +278,7 @@ let cardInfo = destinations.findDestination(parseInt(destination.id));
 }
 
 function toggleDestinationModal () {
-      destinationModal.classList.toggle('show-modal');
-
+  destinationModal.classList.toggle('show-modal');
 }
 
 const getPresentTrips = () => {
@@ -245,9 +286,9 @@ const getPresentTrips = () => {
     if(dayjs(trip.date) <= dayjs() && dayjs() < dayjs(trip.date).add(trip.duration, 'day')) {
       presentTripContainer.classList.remove('hidden');
       presentTrip.innerHTML += `  <div tabindex='0' class='trip trip-card' name=${trip.id} id=${trip.destination.id}>
-          <img class='trip upcoming-trip-card-img' id=${trip.destination.id} src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-          <h1 id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
-          <h2 id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
+          <img class='trip upcoming-trip-card-img' name=${trip.id}  id=${trip.destination.id} src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+          <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
+          <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
         </div>`;
     }
   })
