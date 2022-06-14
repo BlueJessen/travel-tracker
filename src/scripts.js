@@ -51,18 +51,6 @@ let trips = null;
 
 
 
-//Event Listeners ================================
-closeButton.addEventListener("click", toggleModal);
-newTripButton.addEventListener('click', showForm);
-newTripForm.addEventListener('keyup', showEstimate);
-submitTripForm.addEventListener('click', submitForm);
-submitTripForm.addEventListener('keyPress', submitForm);
-allMain.addEventListener('click', getEvent);
-allBody.addEventListener('keyup', getKey);
-closeDestinationModal.addEventListener('click', getEvent);
-loginButton.addEventListener('click', attemptLogin)
-
-window.addEventListener('load', toggleLoginModal)
 
 //Data Functions =====================================
 const fetchLoginData = (userID) => {
@@ -84,7 +72,7 @@ const fetchLoginData = (userID) => {
   }).catch(error => console.log(error));
 }
 
-function attemptLogin() {
+const attemptLogin = () => {
   if(password.value === 'travel') {
     let userID = parseInt(username.value.split('traveler')[1]);
     fetchLoginData(userID)
@@ -93,10 +81,10 @@ function attemptLogin() {
   }
 }
 
-function failedToFetch() {
+const failedToFetch = () => {
   username.value = '';
   password.value = '';
-  errorMessage.innerText = `invalid username please try again`;
+  errorMessage.innerText = `Server error please try again or user different username`;
   toggleLoginModal()
 }
 
@@ -105,7 +93,7 @@ const alertOfIncorrectPassword = () => {
   errorMessage.innerText = `username or password is incorrect`;
 }
 
-function toggleLoginModal() {
+const toggleLoginModal = () => {
   loginModal.classList.toggle('show-modal');
 }
 
@@ -184,9 +172,8 @@ const calculateTravelCostThisYear = () => {
   showTotalCost(sum);
 }
 
-function submitForm() {
+const submitForm = () => {
   event.preventDefault();
-  console.log(trips);
   let tripObj = {id: trips.length+1, userID:currentUser.id,
     destinationID: parseInt(destinationOptions.value),
     travelers: travelerAmount.value,
@@ -194,12 +181,11 @@ function submitForm() {
     duration:parseInt(tripDuration.value),
     status:"pending",
     suggestedActivities:[]};
-    console.log(tripObj);
   postUserCall(tripObj,'trips').then(response => reloadData());
   toggleModal();
 }
 
-function reloadData() {
+const reloadData = () => {
   allData().then(data => {
     let trips = data[0].trips;
     destinations = data[1].destinations;
@@ -211,13 +197,12 @@ function reloadData() {
 
 //DOM functions ==============================
 
-function getKey() {
+const getKey = () => {
   if(event.code === 'Enter') {
     getEvent(event)
   }
 }
 function getEvent(event) {
-  console.log(event.target);
   if(event.target.classList.contains('trip')) {
     showDestinationModal(event.target);
   }else if(event.target.classList.contains('close-destination-button')) {
@@ -225,12 +210,12 @@ function getEvent(event) {
   }
 }
 
-function showForm() {
+const showForm = () => {
   populateSelections();
   toggleModal();
 }
 
-function showEstimate() {
+const showEstimate = () => {
   let duration = tripDuration.value;
   let travelers = travelerAmount.value;
   let destination = destinationOptions.value;
@@ -247,7 +232,7 @@ const populateSelections = () => {
   });
 }
 
-function toggleModal() {
+const toggleModal = () => {
   formModal.classList.toggle('show-modal')
 }
 
@@ -258,18 +243,32 @@ const showTotalCost = (sum) => {
   totalThisYear.innerText = `$ ${sum}.00`;
 }
 
+const getModalText = (destination, thisTrip) => {
+  console.log(destination.classList)
+  if(destination.classList.contains('past')){
+    return `Your ${thisTrip.date} trip with ${thisTrip.travelers} was ${thisTrip.duration} days!`;
+  }else if(destination.classList.contains('upcoming')) {
+      return `Your ${thisTrip.date} trip with ${thisTrip.travelers} will be ${thisTrip.duration} days!`
+  }else if(destination.classList.contains('pending')){
+      return `Your ${thisTrip.date} trip with ${thisTrip.travelers} is pending!`
+  }else if(destination.classList.contains('present')){
+      return `Your ${thisTrip.date} trip with ${thisTrip.travelers} is ${thisTrip.duration} days!`
+  }
+}
+
 const showDestinationModal = (destination) => {
-  let tripID = parseInt(destination.name);
-  console.log(tripID);
+  let tripID = parseInt((destination.closest('.trip-card').id).split(',')[1]);
   let thisTrip = usersTrips.findTrip(tripID);
-let cardInfo = destinations.findDestination(parseInt(destination.id));
+let cardInfo = destinations.findDestination( parseInt((destination.closest('.trip-card').id).split(',')[0]));
+  let cardText = getModalText(destination, thisTrip);
+  console.log(cardText)
   destinationModal.innerHTML = `
     <span class="close-destination-button">X</span>
     <div class='modal-content destination-modal'>
       <div>
         <img class='large-destination-image' src=${cardInfo.imageUrl} alt=${cardInfo.altText} ></img>
         <h1 class='destination-name'>${cardInfo.name}</h1>
-        <h1 class='destination-details'> Your ${thisTrip.date} trip with ${thisTrip.travelers} was ${thisTrip.duration} days!</h1>
+        <h1 class='destination-details'>${cardText}</h1>
         <p class='destination-details'>Flight Cost Estimate Per Person: $${cardInfo.flightCost}</p>
         <p class= 'destination-details'>Lodging Cost Per Day: $${cardInfo.lodgingCost}</p>
       </div>
@@ -277,56 +276,73 @@ let cardInfo = destinations.findDestination(parseInt(destination.id));
  toggleDestinationModal();
 }
 
-function toggleDestinationModal () {
+const toggleDestinationModal = ()  => {
   destinationModal.classList.toggle('show-modal');
 }
 
 const getPresentTrips = () => {
+  presentTrip.innerHTML = '';
   usersTrips.trips.forEach((trip) => {
     if(dayjs(trip.date) <= dayjs() && dayjs() < dayjs(trip.date).add(trip.duration, 'day')) {
       presentTripContainer.classList.remove('hidden');
-      presentTrip.innerHTML += `  <div tabindex='0' class='trip trip-card' name=${trip.id} id=${trip.destination.id}>
-          <img class='trip upcoming-trip-card-img' name=${trip.id}  id=${trip.destination.id} src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-          <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-name'>${trip.destination.name}</h1>
-          <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-date'>${trip.date}</h2>
+      presentTrip.innerHTML += `  <div tabindex='0' class='present trip trip-card' id=${trip.destination.id},${trip.id}>
+          <img class='present trip upcoming-trip-card-img' name=${trip.id}  id=${trip.destination.id} src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+          <h1 name=${trip.id} id=${trip.destination.id} class='present trip card-name'>${trip.destination.name}</h1>
+          <h2 name=${trip.id} id=${trip.destination.id} class='present trip card-date'>${trip.date}</h2>
         </div>`;
     }
   })
 }
 
 const getUpcomingTrips = () => {
+    upcomingTrips.innerHTML = '';
   usersTrips.trips.forEach((trip) => {
     if(dayjs(trip.date) > dayjs() && trip.status !== 'pending') {
       upcomingTrips.innerHTML += `
-      <div name=${trip.id} tabindex='0' class= 'trip upcoming-trip-card'id=${trip.destination.id}>
-        <img name=${trip.id} id=${trip.destination.id} class='trip upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-card-name'>${trip.destination.name}</h1>
-        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-card-date'>${trip.date}</h2>
+      <div name=${trip.id} tabindex='0' class= 'upcoming trip trip-card upcoming-trip-card'id=${trip.destination.id},${trip.id}>
+        <img name=${trip.id} id=${trip.destination.id} class='upcoming trip upcoming-trip-card-img card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <h1 name=${trip.id} id=${trip.destination.id} class='upcoming trip card-name'>${trip.destination.name}</h1>
+        <h2 name=${trip.id} id=${trip.destination.id} class='upcoming trip card-date'>${trip.date}</h2>
       </div>`;
     }
   });
 }
 
 const getPastTrips = () => {
+    pastTrips.innerHTML = '';
   usersTrips.trips.forEach((trip) => {
     if(dayjs(trip.date) < dayjs()) {
-      pastTrips.innerHTML += `<div name=${trip.id} tabindex='0'id=${trip.destination.id} class= 'trip trip-card'>
-        <img name=${trip.id} id=${trip.destination.id} class='trip trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.altText}></img>
-        <h1 value=${trip.id} id=${trip.destination.id} class='trip trip-card-name'>${trip.destination.name}</h1>
-        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-card-date'>${trip.date}</h2>
+      pastTrips.innerHTML += `<div value=${trip.id} tabindex='0' id=${trip.destination.id},${trip.id} class= 'past trip trip-card'>
+        <img name=${trip.id} id=${trip.destination.id} class='past trip card-img' src=${trip.destination.imageUrl} alt=${trip.destination.altText}></img>
+        <h1 value=${trip.id} id=${trip.destination.id} class='past trip card-name'>${trip.destination.name}</h1>
+        <h2 class='past trip card-date'>${trip.date}</h2>
       </div>`;
     }
   });
 }
 
 const getPendingTrips = () => {
+  pendingTrips.innerHTML = '';
   usersTrips.trips.forEach((trip) => {
     if(trip.status === 'pending' && dayjs(trip.date) > dayjs()) {
-      pendingTrips.innerHTML += `<div name=${trip.id}  tabindex='0' id=${trip.destination.id} class= 'trip trip-card'>
-        <img name=${trip.id} id=${trip.destination.id} class='trip trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
-        <h1 name=${trip.id} id=${trip.destination.id} class='trip trip-card-name'>${trip.destination.name}</h1>
-        <h2 name=${trip.id} id=${trip.destination.id} class='trip trip-card-date'>${trip.date}</h2>
+      pendingTrips.innerHTML += `<div name=${trip.id}  tabindex='0'id=${trip.destination.id},${trip.id} class= 'pending trip trip-card'>
+        <img name=${trip.id} id=${trip.destination.id} class='pending trip card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <h1 name=${trip.id} id=${trip.destination.id} class='pending trip card-name'>${trip.destination.name}</h1>
+        <h2 name=${trip.id} id=${trip.destination.id} class='pending trip card-date'>${trip.date}</h2>
       </div>`;
-    }
+    } 
   })
 }
+
+//Event Listeners ================================
+closeButton.addEventListener("click", toggleModal);
+newTripButton.addEventListener('click', showForm);
+newTripForm.addEventListener('keyup', showEstimate);
+submitTripForm.addEventListener('click', submitForm);
+submitTripForm.addEventListener('keyPress', submitForm);
+allMain.addEventListener('click', getEvent);
+allBody.addEventListener('keyup', getKey);
+closeDestinationModal.addEventListener('click', getEvent);
+loginButton.addEventListener('click', attemptLogin)
+
+window.addEventListener('load', toggleLoginModal)
