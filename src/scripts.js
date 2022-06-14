@@ -70,8 +70,11 @@ const fetchLoginData = (userID) => {
     toggleLoginModal();
   let user = getPromise(`travelers/${userID}`);
   user.then(data => {
+    if (data.message === `No traveler found with an id of ${userID}`) {
+      return failedToFetch()
+    }
     currentUser = data;
-  });
+  }).catch(error => failedToFetch())
   allData().then(data => {
     trips = data[0].trips;
     destinations = data[1].destinations;
@@ -88,6 +91,13 @@ function attemptLogin() {
   } else {
     alertOfIncorrectPassword();
   }
+}
+
+function failedToFetch() {
+  username.value = '';
+  password.value = '';
+  errorMessage.innerText = `invalid username please try again`;
+  toggleLoginModal()
 }
 
 const alertOfIncorrectPassword = () => {
