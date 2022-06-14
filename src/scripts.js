@@ -298,7 +298,7 @@ const getUpcomingTrips = () => {
     if(dayjs(trip.date) > dayjs() && trip.status !== 'pending') {
       upcomingTrips.innerHTML += `
       <div name=${trip.id} tabindex='0' class= 'upcoming trip trip-card upcoming-trip-card'id=${trip.destination.id},${trip.id}>
-        <img name=${trip.id} id=${trip.destination.id} class='upcoming trip upcoming-trip-card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
+        <img name=${trip.id} id=${trip.destination.id} class='upcoming trip upcoming-trip-card-img card-img' src=${trip.destination.imageUrl} alt=${trip.destination.alt}></img>
         <h1 name=${trip.id} id=${trip.destination.id} class='upcoming trip card-name'>${trip.destination.name}</h1>
         <h2 name=${trip.id} id=${trip.destination.id} class='upcoming trip card-date'>${trip.date}</h2>
       </div>`;

@@ -46,20 +46,20 @@
           <ul style="list-style: none;">
             <li>
               <label for='destination'>Destination:</label>
-              <select name='destination' id='destination-selection'>
+              <select name='destination' id='destination-selection' required>
               </select>
             </li>
             <li>
               <label for='date'>Start Date:</label>
-              <input type='date' id='date' name='trip-date'></input>
+              <input type='date' id='date' name='trip-date' required></input>
             </li>
             <li>
               <label for='duration'>Duration:</label>
-              <input type='text' id='duration' name='trip-duration'></input>
+              <input type='text' id='duration' name='trip-duration' required></input>
             </li>
             <li>
               <label for='duration'>Amount of Travelers:</label>
-              <input type='text' id='travelers' name='traveler-amount'></input>
+              <input type='text' id='travelers' name='traveler-amount' required></input>
             </li>
           </ul>
           <button class='book-new-trip' type='submit'>Book Trip</button>
