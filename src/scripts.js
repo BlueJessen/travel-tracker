@@ -330,7 +330,7 @@ const getPendingTrips = () => {
         <h1 name=${trip.id} id=${trip.destination.id} class='pending trip card-name'>${trip.destination.name}</h1>
         <h2 name=${trip.id} id=${trip.destination.id} class='pending trip card-date'>${trip.date}</h2>
       </div>`;
-    }
+    } 
   })
 }
 
