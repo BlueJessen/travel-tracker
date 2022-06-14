@@ -193,7 +193,10 @@ nav {
   background-color: rgb(179, 227, 245, .8);
   overflow: scroll;
 }
-
+.error-message {
+  color: red;
+  margin: 0;
+}
 .upcoming-trip-card {
   width: 24vw;
   height: 36vh;
