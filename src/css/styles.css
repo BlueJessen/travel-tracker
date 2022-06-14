@@ -175,8 +175,8 @@ nav {
 
 .present-trip {
   margin: 10px;
-  width: 35vw;
-  height: 40vh;
+  width: 30vw;
+  height: 30vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -285,9 +285,10 @@ nav {
 
 .pending-trips {
   width:30vw;
-  height: 45vh;
+  height: 30vh;
   background-color: rgb(179, 227, 245, .8);
   text-align: center;
+  overflow: scroll; 
 }
 
 .hidden {

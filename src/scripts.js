@@ -281,6 +281,7 @@ const toggleDestinationModal = ()  => {
 }
 
 const getPresentTrips = () => {
+  presentTrip.innerHTML = '';
   usersTrips.trips.forEach((trip) => {
     if(dayjs(trip.date) <= dayjs() && dayjs() < dayjs(trip.date).add(trip.duration, 'day')) {
       presentTripContainer.classList.remove('hidden');
@@ -294,6 +295,7 @@ const getPresentTrips = () => {
 }
 
 const getUpcomingTrips = () => {
+    upcomingTrips.innerHTML = '';
   usersTrips.trips.forEach((trip) => {
     if(dayjs(trip.date) > dayjs() && trip.status !== 'pending') {
       upcomingTrips.innerHTML += `
@@ -307,6 +309,7 @@ const getUpcomingTrips = () => {
 }
 
 const getPastTrips = () => {
+    pastTrips.innerHTML = '';
   usersTrips.trips.forEach((trip) => {
     if(dayjs(trip.date) < dayjs()) {
       pastTrips.innerHTML += `<div value=${trip.id} tabindex='0' id=${trip.destination.id},${trip.id} class= 'past trip trip-card'>
@@ -319,6 +322,7 @@ const getPastTrips = () => {
 }
 
 const getPendingTrips = () => {
+  pendingTrips.innerHTML = '';
   usersTrips.trips.forEach((trip) => {
     if(trip.status === 'pending' && dayjs(trip.date) > dayjs()) {
       pendingTrips.innerHTML += `<div name=${trip.id}  tabindex='0'id=${trip.destination.id},${trip.id} class= 'pending trip trip-card'>
