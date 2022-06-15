@@ -35,6 +35,7 @@ let destinationOptions = document.getElementById('destination-selection');
 let cost = document.querySelector('.cost');
 let agentFee = document.querySelector('.agent-fee');
 let submitTripForm = document.querySelector('.book-new-trip');
+let formError = document.querySelector('.form-error-message');
 
 //login selectors
 let username = document.getElementById('username');
@@ -174,6 +175,7 @@ const calculateTravelCostThisYear = () => {
 
 const submitForm = () => {
   event.preventDefault();
+  if(tripDate.value && travelerAmount.value && destinationOptions.value && tripDuration.value && travelerAmount.value) {
   let tripObj = {id: trips.length+1, userID:currentUser.id,
     destinationID: parseInt(destinationOptions.value),
     travelers: travelerAmount.value,
@@ -183,6 +185,9 @@ const submitForm = () => {
     suggestedActivities:[]};
   postUserCall(tripObj,'trips').then(response => reloadData());
   toggleModal();
+}else{
+  formError.innerText = 'Please fill out all inputs';
+}
 }
 
 const reloadData = () => {
@@ -330,7 +335,7 @@ const getPendingTrips = () => {
         <h1 name=${trip.id} id=${trip.destination.id} class='pending trip card-name'>${trip.destination.name}</h1>
         <h2 name=${trip.id} id=${trip.destination.id} class='pending trip card-date'>${trip.date}</h2>
       </div>`;
-    } 
+    }
   })
 }
 
